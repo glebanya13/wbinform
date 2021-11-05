@@ -31,28 +31,36 @@ export default {
                     throw error
                 });
         },
-        API_SMS_NOTIFIER({getters, dispatch, commit}) {
+        API_SMS_NOTIFIER({getters, commit}) {
             var SMSru = require('sms_ru'),
             sms = new SMSru('8d774f95-4e72-cfd4-7579-0404ca9f2df7');
-            if(getters.balance >= 100) {
-            getters.orders.forEach(order => {
-                if(order.status == 0 && 1) {
-                    sms.sms_cost({to: getters.orders.filter(order => order.status == 0 && 1).map(order => order.userInfo.phone) ,text: 'Поступил заказ. Спасибо за заказ!'}, function(e){
+                    sms.sms_cost({to: getters.orders.filter(order => order.status == 0).map(order => order.userInfo.phone) ,text: 'Поступил заказ. Спасибо за заказ!'}, function(e){
                         console.log(e);
+                        var balance = e.price * getters.orders.filter(order => order.status == 0).map(order => order.userInfo.phone).length
+                        if(getters.balance < balance) {
+                            commit('SET_ERROR', 'Пополните Ваш баланс');
+                        } else {
+                            // dispatch('CHANGE_USER_BALANCE', balance)
+                        }
                     });
-                }
-                if(order.userStatus == 2) {
-                    sms.sms_cost({to: getters.orders.filter(order => order.userStatus == 2).map(order => order.userInfo.phone) ,text: 'Заказ доставлен. Спасибо что выкупили.'}, function(e){
-                        var balance = e.price * getters.orders.filter(order => order.userStatus == 2).map(order => order.userInfo.phone).length
-                        dispatch('CHANGE_USER_BALANCE', balance)
+                    sms.sms_cost({to: getters.orders.filter(order => order.status == 1 && order.userStatus !=1).map(order => order.userInfo.phone) ,text: 'Поступил заказ. Спасибо за заказ!'}, function(e){
+                        console.log(e);
+                        var balance = e.price * getters.orders.filter(order => order.status == 1 && order.userStatus !=1).map(order => order.userInfo.phone).length
+                        if(getters.balance < balance) {
+                            commit('SET_ERROR', 'Пополните Ваш баланс');
+                        } else {
+                            // dispatch('CHANGE_USER_BALANCE', balance)
+                        }
                     });
-                }
-                
-            });
-        }
-        else {
-            commit('SET_ERROR', 'Пополните Ваш баланс');
-        }
+                    // sms.sms_cost({to: getters.orders.filter(order => order.userStatus == 2).map(order => order.userInfo.phone) ,text: 'Заказ доставлен. Спасибо что выкупили.'}, function(e){
+                    //     var balance = e.price * getters.orders.filter(order => order.userStatus == 2).map(order => order.userInfo.phone).length
+                    //     if(getters.balance < balance) {
+                    //         commit('SET_ERROR', 'Пополните Ваш баланс');
+                    //     } else {
+                    //         dispatch('CHANGE_USER_BALANCE', balance)
+                    //     }
+                    // });
+        
             
         },
         PAYNAMENT({getters, dispatch}) {
@@ -100,7 +108,7 @@ export default {
 
             // 3. HANDLING "ResultURL" CALLBACK REQUEST
 
-            fetch("/robokassa/callback", function (req, res) {
+            fetch("https://theprizmo.com/callback.php", function (req, res) {
 
                 robokassaHelper.handleResultUrlRequest(req, res, function (values, userData) {
 

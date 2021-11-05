@@ -78,7 +78,7 @@ export default {
       if(status == 0) {
         return 'Новый';
       }
-      if(status == 1 && 6 && 8) {
+      if(status == 6 && 8) {
         return 'На сборке';
       }
       if(status == 3) {
@@ -86,6 +86,18 @@ export default {
       }
       if(userStatus == 3) {
         return 'Отменен';
+      }
+      if(userStatus == 1) {
+        return 'Отменен';
+      }
+      if(userStatus == 5) {
+        return 'Отменен';
+      }
+      if(userStatus == 1 && status == 1) {
+        return 'Отменен';
+      }
+      if(status == 1) {
+        return 'На сборке'
       }
       if(userStatus == 2) {
         return 'Доставлен';
@@ -98,7 +110,7 @@ export default {
       if(status == 0) {
         return;
       }
-      if(status == 1 && 6 && 8) {
+      if(status == 6 && 8) {
         return 'blue';
       }
       if(status == 3) {
@@ -106,6 +118,15 @@ export default {
       }
       if(userStatus == 3) {
         return 'red';
+      }
+      if(userStatus == 1) {
+        return 'red';
+      }
+      if(userStatus == 5) {
+        return 'red';
+      }
+      if(status == 1 && userStatus != 1) {
+        return 'blue'
       }
       if(userStatus == 2) {
         return 'green';

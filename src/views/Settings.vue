@@ -2,47 +2,37 @@
   <v-container fluid>
     <h1 class="mb-6 ml-2">Настройки</h1>
     <v-row justify="center">
-      <v-col cols="12" sm="12" md="6">
+      <!-- <v-col cols="12" sm="12" md="6">
         <v-card>
           <v-toolbar color="purple darken-2" dark flat>
             <v-toolbar-title>Настройка SMS</v-toolbar-title>
           </v-toolbar>
           <v-card-text>
             <v-list>
-              <v-list-item
-        >
-        <v-list-content>
-          <div class="ml-1">
-              <v-row>
-                <v-col cols="12" md="8" sm="5" xs="12">
-          <h2>Стартовое уведомление</h2>
+              <v-list-item>
+                <div class="ml-1">
+                  <v-container>
+                    <v-row>
+                      <v-col cols="12" md="8">
+                        <h2>Стартовое уведомление</h2>
+                      </v-col>
+                      <v-col cols="12" md="4">
+                        <v-checkbox
+                          color="success"
+                          value="success"
+                          hide-details
+                        ></v-checkbox>
+                      </v-col>
+                    </v-row>
 
-                </v-col>
-                <v-col cols="12" md="1" sm="1" xs="6">
-<v-checkbox
-              v-model="ex4"
-              color="success"
-              value="success"
-              hide-details
-            ></v-checkbox>
-                </v-col>
-                <v-col cols="12" md="1" sm="1" xs="6">
-            <v-btn small text>Изменить</v-btn>
-
-                </v-col>
-              </v-row>
-            </div>
-        </v-list-content>
-          <v-list-item-action>
-            
-          </v-list-item-action>
-          
-        </v-list-item>
+                        <v-btn small text>Изменить</v-btn>
+                  </v-container>
+                </div>
+              </v-list-item>
             </v-list>
-           
           </v-card-text>
         </v-card>
-      </v-col>
+      </v-col> -->
       <v-col cols="12" sm="12" md="6">
         <v-card class="elevation-4">
           <v-toolbar color="purple darken-2" dark flat>
@@ -116,7 +106,7 @@ export default {
     submit() {
       this.$refs.observer.validate();
       this.$store
-        .dispatch("ADD_USER_API_TOKEN", { token: this.token })
+        .dispatch("ADD_USER_API_TOKEN", this.token)
         .then(() => {
           this.$router.push("/");
         });

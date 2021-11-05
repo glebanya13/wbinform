@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import firebase from 'firebase';
 
 let defaultUserData = {
     balance: 0,
@@ -18,80 +19,59 @@ export default {
         },
     },
     actions: {
-        LOAD_USER_DATA({ commit, dispatch }, payload) {
+        LOAD_USER_DATA({ commit, getters, dispatch }) {
 
             commit('SET_PROCESSING', true)
-            let userDataRef = Vue.$db.collection('userData').doc(payload)
-            userDataRef.get()
-                .then((data) => {
-                    let userData = defaultUserData
-                    if (data.exists) {
-                        userData = data.data();
-                    }
 
+            var userDataRef = firebase.database().ref('userData/' + getters.userId);
+            try {
+                userDataRef.on('value', (snapshot) => {
+                    const data = snapshot.val();
+                    let userData = defaultUserData
+                    if (data) {
+                        userData = data;
+                    }
                     commit('SET_USER_DATA', userData)
                     dispatch('GET_WB_API')
                     commit('SET_PROCESSING', false)
                 })
-                .catch(error => {
-                    commit('SET_PROCESSING', false)
-                    commit('SET_ERROR', error)
-                    throw error
-                })
+            } catch (error) {
+                commit('SET_PROCESSING', false)
+                commit('SET_ERROR', error)
+                throw error
+            }
         },
         ADD_USER_API_TOKEN({ commit, getters }, payload) {
-            commit('SET_PROCESSING', true);
+            commit('SET_PROCESSING', true)
 
-            let userDataRef = Vue.$db.collection('userData').doc(getters.userId);
-
-            userDataRef.set({
-                apiToken: payload.apiToken,
-            }, { merge: true })
-
-                .then(() => {
-                    commit('SET_PROCESSING', false);
-                })
-                .catch((e) => {
-                    commit('SET_ERROR', e);
-                    commit('SET_PROCESSING', false);
-                    throw e;
+            try {
+                firebase.database().ref('userData/' + getters.userId).update({
+                    apiToken: payload
                 });
-        },
-        ADD_USER_BALANCE({ commit, getters }, payload) {
-            commit('SET_PROCESSING', true);
-            let userDataRef = Vue.$db.collection('userData').doc(getters.userId);
+                commit('SET_PROCESSING', false)
 
-            userDataRef.set({
-                balance: getters.balance + payload,
-            }, { merge: true })
-
-                .then(() => {
-                    document.location.reload()
-                    commit('SET_PROCESSING', false);
-                })
-                .catch((e) => {
-                    commit('SET_ERROR', e);
-                    commit('SET_PROCESSING', false);
-                    throw e;
-                });
+            }
+            catch (e) {
+                commit('SET_ERROR', e);
+                commit('SET_PROCESSING', false);
+                throw e;
+            }
         },
         CHANGE_USER_BALANCE({ commit, getters }, payload) {
-            commit('SET_PROCESSING', true);
-            let userDataRef = Vue.$db.collection('userData').doc(getters.userId);
+            commit('SET_PROCESSING', true)
 
-            userDataRef.set({
-                balance: getters.balance - payload,
-            }, { merge: true })
-
-                .then(() => {
-                    document.location.reload()
-                    commit('SET_PROCESSING', false);
-                })
-                .catch((e) => {
-                    commit('SET_ERROR', e);
-                    commit('SET_PROCESSING', false);
-                    throw e;
+            try {
+                firebase.database().ref('userData/' + getters.userId).update({
+                    balance: getters.balance - payload
                 });
+                commit('SET_PROCESSING', false)
+
+            }
+            catch (e) {
+                commit('SET_ERROR', e);
+                commit('SET_PROCESSING', false);
+                throw e;
+            }
         }
 
     },

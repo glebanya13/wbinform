@@ -46,7 +46,9 @@
             class="elevation-1"
           >
             <template v-slot:item.userStatus="{ item }">
-              <v-chip outlined :color="color(item.userStatus, item.status)">{{ text(item.userStatus, item.status) }}</v-chip>
+              <v-chip outlined :color="color(item.userStatus, item.status)">{{
+                text(item.userStatus, item.status)
+              }}</v-chip>
             </template>
           </v-data-table>
         </v-card>
@@ -75,64 +77,69 @@ export default {
   }),
   methods: {
     text(userStatus, status) {
-      if(status == 0) {
-        return 'Новый';
+      console.log('u = ' + userStatus);
+      console.log('s = ' + status);
+      if (status == 0) {
+        return "Новый";
       }
-      if(status == 6 && 8) {
-        return 'На сборке';
+      if (status == 6 && 8) {
+        return "На сборке";
       }
-      if(status == 3) {
-        return 'Отклонен';
+      if (status == 3) {
+        return "Отклонен";
       }
-      if(userStatus == 3) {
-        return 'Отменен';
+      if (userStatus == 3) {
+        return "Отменен";
       }
-      if(userStatus == 1) {
-        return 'Отменен';
+      if (userStatus == 1) {
+        return "Отменен";
       }
-      if(userStatus == 5) {
-        return 'Отменен';
+      if (userStatus == 5) {
+        return "Отменен";
       }
-      if(userStatus == 1 && status == 1) {
-        return 'Отменен';
+      if (userStatus == 1 && status == 1) {
+        return "Отменен";
       }
-      if(status == 1) {
-        return 'На сборке'
+      if (status == 1) {
+        return "На сборке";
       }
-      if(userStatus == 2) {
-        return 'Доставлен';
+      if (userStatus == 2) {
+        return "Доставлен";
       }
-      if(status == 2 && 5 && 9) {
-        return 'На доставке';
+      if(status == 6) {
+        return "Доставлен";
+      }
+      if (status == 2 && 5 && 9 && userStatus == 4) {
+        return "На доставке";
       }
     },
     color(userStatus, status) {
-      if(status == 0) {
+      if (status == 0) {
         return;
       }
-      if(status == 6 && 8) {
-        return 'blue';
+      if (status == 6 && 8) {
+        return "blue";
       }
-      if(status == 3) {
-        return 'red';
+      if (status == 3) {
+        return "red";
       }
-      if(userStatus == 3) {
-        return 'red';
+      if (userStatus == 3) {
+        return "red";
       }
-      if(userStatus == 1) {
-        return 'red';
+      if (userStatus == 1) {
+        return "red";
       }
-      if(userStatus == 5) {
-        return 'red';
+      if (userStatus == 5) {
+        return "red";
       }
-      if(status == 1 && userStatus != 1) {
-        return 'blue'
+      if (status == 1 && userStatus != 1) {
+        return "blue";
       }
-      if(userStatus == 2) {
-        return 'green';
+      if (userStatus == 2) {
+        return "green";
       }
-      if(status == 2 && 5 && 9) {
-        return 'yellow';
+      if (status == 2 && 5 && 9) {
+        return "yellow";
       }
     },
     notifier() {
@@ -152,12 +159,12 @@ export default {
     },
     mailing() {
       let m;
-      if(this.balance == 0) {
+      if (this.balance == 0) {
         m = 0;
       } else {
         m = Math.floor(this.balance / 3.25);
       }
-      return m
+      return m;
     },
     orders() {
       return this.$store.getters.orders;

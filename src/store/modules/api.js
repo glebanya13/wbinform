@@ -1,18 +1,11 @@
 export default {
-    state: {
-        orders: []
-    },
-    mutations: {
-        SET_ORDERS(state, payload) {
-            state.orders = payload
-        }
-    },
     actions: {
-        GET_WB_API({ commit, getters }) {
+        // server
+        GET_WB_API({ commit, getters, dispatch }) {
             const api_key = getters.apiToken;
 
             var url =
-                "https://suppliers-api.wildberries.ru/api/v2/orders?date_start=2021-08-01T00%3A00%3A00.365%2B03%3A00&date_end=2022-06-26T12%3A00%3A33.365%2B03%3A00&take=1000&skip=0";
+                "https://suppliers-api.wildberries.ru/api/v2/orders?date_start=2021-08-29T00%3A00%3A00.365%2B03%3A00&date_end=2022-06-26T12%3A00%3A33.365%2B03%3A00&take=1000&skip=0";
             // "https://suppliers-api.wildberries.ru/api/v2/orders?date_start=2021-08-01T00%3A00%3A00.365%2B03%3A00&date_end=2022-06-26T12%3A00%3A33.365%2B03%3A00&take=1000&skip=0";
 
             fetch(url, {
@@ -24,45 +17,45 @@ export default {
                 .then((res) => res.json())
                 .then((data) => {
                     var orders = data.orders;
-                    commit('SET_ORDERS', orders)
+                    dispatch('LOAD_TO_DB_WB_DATA', orders);
                 })
                 .catch((error) => {
-                    commit('SET_ERROR', error)
-                    throw error
+                    commit('SET_ERROR', error);
+                    throw error;
                 });
         },
-        API_SMS_NOTIFIER({getters, commit, dispatch}) {
-            var SMSru = require('sms_ru'),
-            sms = new SMSru('8d774f95-4e72-cfd4-7579-0404ca9f2df7');
-                    sms.sms_cost({to: getters.orders.filter(order => order.status == 0).map(order => order.userInfo.phone) ,text: 'Поступил заказ. Спасибо за заказ!'}, function(e){
-                        var balance = e.price * getters.orders.filter(order => order.status == 0).map(order => order.userInfo.phone).length
-                        if(getters.balance < balance) {
-                            commit('SET_ERROR', 'Пополните Ваш баланс');
-                        } else {
-                            // dispatch('CHANGE_USER_BALANCE', balance)
-                        }
-                    });
-                    sms.sms_cost({to: getters.orders.filter(order => order.status == 1 && order.userStatus !=1).map(order => order.userInfo.phone) ,text: 'Поступил заказ. Спасибо за заказ!'}, function(e){
-                        console.log(e);
-                        var balance = e.price * getters.orders.filter(order => order.status == 1 && order.userStatus !=1).map(order => order.userInfo.phone).length
-                        if(getters.balance < balance) {
-                            commit('SET_ERROR', 'Пополните Ваш баланс');
-                        } else {
-                            dispatch('CHANGE_USER_BALANCE', balance)
-                        }
-                    });
-                    // sms.sms_cost({to: getters.orders.filter(order => order.userStatus == 2).map(order => order.userInfo.phone) ,text: 'Заказ доставлен. Спасибо что выкупили.'}, function(e){
-                    //     var balance = e.price * getters.orders.filter(order => order.userStatus == 2).map(order => order.userInfo.phone).length
-                    //     if(getters.balance < balance) {
-                    //         commit('SET_ERROR', 'Пополните Ваш баланс');
-                    //     } else {
-                    //         dispatch('CHANGE_USER_BALANCE', balance)
-                    //     }
-                    // });
-        
+        API_SMS_NOTIFIER({ getters, commit, dispatch }) {
+            var SMSru = require('sms_ru');
             
+            const sms = new SMSru('8d774f95-4e72-cfd4-7579-0404ca9f2df7');
+            if (getters.orders.filter(order => order.status == 1 && order.userStatus != 1 && order.sms_status != 1).length > 0) {
+                console.log('1');
+                sms.sms_cost({ to: getters.orders.filter(order => order.status == 1 && order.userStatus != 1 && order.sms_status != 1).map(order => order.phone), text: 'Поступил заказ. Спасибо за заказ!' }, function (e) {
+                    console.log(e);
+                    var balance = e.price * getters.orders.filter(order => order.status == 1 && order.userStatus != 1 && order.sms_status != 1).map(order => order.phone).length
+                    if (getters.balance < balance) {
+                        commit('SET_ERROR', 'Пополните Ваш баланс');
+                    } else {
+                        dispatch('CHANGE_USER_BALANCE', balance)
+                        dispatch('ADD_SMS_STATUS', { orders: getters.orders.filter(order => order.status == 1 && order.userStatus != 1 && order.sms_status != 1), sms_status: 1, sms_price: e.price })
+                    }
+                });
+            }
+            if (getters.orders.filter(order => order.userStatus == 2 && order.sms_status != 2).length > 0) {
+                console.log('2');
+                sms.sms_cost({ to: getters.orders.filter(order => order.userStatus == 2 && order.sms_status != 2).map(order => order.phone), text: 'Заказ доставлен. Спасибо что выкупили.' }, function (e) {
+                    var balance = e.price * getters.orders.filter(order => order.userStatus == 2 && order.sms_status != 2).map(order => order.phone).length
+                    if (getters.balance < balance) {
+                        commit('SET_ERROR', 'Пополните Ваш баланс');
+                    } else {
+                        dispatch('CHANGE_USER_BALANCE', balance);
+                        dispatch('ADD_SMS_STATUS', { orders: getters.orders.filter(order => order.userStatus == 2 && order.sms_status != 2), sms_status: 2, sms_price: e.price })
+                    }
+                });
+            }
         },
-        PAYNAMENT({getters}) {
+        // no server
+        PAYNAMENT({ getters }) {
             const robokassa = require('node-robokassa');
 
             const robokassaHelper = new robokassa.RobokassaHelper({
@@ -126,8 +119,5 @@ export default {
 
             })
         }
-    },
-    getters: {
-        orders: (s) => s.orders
     },
 }

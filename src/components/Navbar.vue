@@ -10,7 +10,7 @@
         <v-dialog transition="dialog-top-transition" max-width="600">
           <template v-slot:activator="{ on, attrs }">
             <v-chip outlined v-bind="attrs" v-on="on" color="purple"
-              >Баланс: {{ balance }} ₽</v-chip
+              >Баланс: {{ Math.round(balance) }} ₽</v-chip
             >
           </template>
           <template v-slot:default="dialog">

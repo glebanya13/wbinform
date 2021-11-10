@@ -76,7 +76,10 @@ export default {
         STATE_CHANGED({ commit, dispatch }, payload) {
             if (payload) {
                 commit('SET_USER', { uid: payload.uid, email: payload.email })
-                dispatch('LOAD_USER_DATA', payload.uid)
+                dispatch('LOAD_USER_DATA', payload.uid);
+                // server
+                dispatch('LOAD_FROM_DB_WB_DATA')
+                // dispatch('LOAD_FROM_DB_SMS_DATA')
             } else {
                 commit('UNSET_USER')
             }

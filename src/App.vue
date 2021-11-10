@@ -34,9 +34,17 @@ export default {
   data: () => ({
     snackbar: false
   }),
+  methods: {
+    countUp() {
+      console.log('sadsa');
+    }
+  },
   computed: {
     error() {
       return this.$store.getters.getError;
+    },
+    isUserAuthenticated() {
+      return this.$store.getters.isUserAuthenticated;
     },
   },
   watch: {
@@ -48,5 +56,15 @@ export default {
       }
     },
   },
+  created() {
+    let result = this.$crontab.addJob({
+      name: "api",
+      interval: {
+        seconds: '/1',
+      },
+      // job: this.$store.dispatch('BATCH')
+    })
+    return result
+  }
 };
 </script>

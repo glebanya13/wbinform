@@ -57,22 +57,23 @@ export default {
                 throw e;
             }
         },
-        CHANGE_USER_BALANCE({ commit, getters }, payload) {
-            commit('SET_PROCESSING', true)
+        // server
+        // CHANGE_USER_BALANCE({ commit, getters }, payload) {
+        //     commit('SET_PROCESSING', true)
 
-            try {
-                firebase.database().ref('userData/' + getters.userId).update({
-                    balance: getters.balance - payload
-                });
-                commit('SET_PROCESSING', false)
+        //     try {
+        //         firebase.database().ref('userData/' + getters.userId).update({
+        //             balance: getters.balance - payload
+        //         });
+        //         commit('SET_PROCESSING', false)
 
-            }
-            catch (e) {
-                commit('SET_ERROR', e);
-                commit('SET_PROCESSING', false);
-                throw e;
-            }
-        }
+        //     }
+        //     catch (e) {
+        //         commit('SET_ERROR', e);
+        //         commit('SET_PROCESSING', false);
+        //         throw e;
+        //     }
+        // }
 
     },
 

@@ -9,7 +9,7 @@
             </v-col>
             <v-col cols="5">
               <h4 class="subheading mt-1">Баланс</h4>
-              <h3 class="purple--text darken-2">{{ balance }} ₽</h3>
+              <h3 class="purple--text darken-2">{{ Math.round(balance) }} ₽</h3>
             </v-col>
           </v-row>
         </v-card>
@@ -50,6 +50,16 @@
                 text(item.userStatus, item.status)
               }}</v-chip>
             </template>
+            <template v-slot:item.sms_status="{ item }">
+              <v-chip outlined>
+                {{item.sms_status ? item.sms_status : 0}}
+              </v-chip>
+            </template>
+            <template v-slot:item.sms_price="{ item }">
+              <v-chip outlined>
+                {{item.sms_price ? item.sms_price : 0}} ₽
+              </v-chip>
+            </template>
           </v-data-table>
         </v-card>
       </v-col>
@@ -69,10 +79,10 @@ export default {
         value: "orderId",
         sortable: false,
       },
-      { text: "Клиент", value: "userInfo[fio]", sortable: false },
+      { text: "Клиент", value: "fio", sortable: false },
       { text: "Статус", value: "userStatus", sortable: false },
-      { text: "Отправлено СМС", value: "sms", sortable: false },
-      { text: "Потрачено", value: "balance", sortable: false },
+      { text: "Отправлено СМС", value: "sms_status", sortable: false },
+      { text: "Потрачено", value: "sms_price", sortable: false },
     ],
   }),
   methods: {
@@ -82,7 +92,7 @@ export default {
       if (status == 0) {
         return "Новый";
       }
-      if (status == 6 && 8) {
+      if (status == 8) {
         return "На сборке";
       }
       if (status == 3) {
@@ -135,10 +145,16 @@ export default {
       if (status == 1 && userStatus != 1) {
         return "blue";
       }
+      if (status == 1) {
+        return "blue";
+      }
       if (userStatus == 2) {
         return "green";
       }
-      if (status == 2 && 5 && 9) {
+       if(status == 6) {
+        return "green";
+      }
+      if (status == 2 && 5 && 9 && userStatus == 4) {
         return "yellow";
       }
     },

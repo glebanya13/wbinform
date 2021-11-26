@@ -135,8 +135,8 @@ export default {
   data: () => ({
     drawer: false,
     links: [
-      { icon: "mdi-account", text: "Кабинет", route: "/" },
-      { icon: "mdi-chart-donut", text: "Настройки", route: "/settings" },
+      { icon: "mdi-account", text: "Настройки", route: "/settings" },
+      { icon: "mdi-chart-bar", text: "Кабинет", route: "/" },
     ],
     reglinks: [
       { icon: "mdi-lock-open", text: "Вход", route: "/signin" },
@@ -161,11 +161,9 @@ export default {
   },
   methods: {
     logout() {
-      this.$confirm("Вы точно хотите выйти?").then(
-        (res) => {
-          if (res) this.$store.dispatch("SIGNOUT");
-        }
-      );
+      this.$confirm("Вы точно хотите выйти?").then((res) => {
+        if (res) this.$store.dispatch("SIGNOUT");
+      });
     },
     regform() {
       this.$router.push("/signup");
@@ -174,8 +172,8 @@ export default {
       this.$router.push("/signin");
     },
     paynament() {
-      this.$store.dispatch("PAYNAMENT")
-    } 
+      this.$store.dispatch("PAYNAMENT");
+    },
   },
 };
 </script>

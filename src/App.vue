@@ -2,12 +2,7 @@
   <v-app class="grey lighten-4">
     <v-snackbar v-model="snackbar">
       <template v-slot:action="{ attrs }">
-        <v-btn
-          color="red"
-          text
-          v-bind="attrs"
-          @click="snackbar = false"
-        >
+        <v-btn color="red" text v-bind="attrs" @click="snackbar = false">
           Close
         </v-btn>
       </template>
@@ -29,16 +24,11 @@ export default {
   name: "App",
   components: {
     Footer,
-    Navbar
+    Navbar,
   },
   data: () => ({
-    snackbar: false
+    snackbar: false,
   }),
-  methods: {
-    countUp() {
-      console.log('sadsa');
-    }
-  },
   computed: {
     error() {
       return this.$store.getters.getError;
@@ -49,22 +39,12 @@ export default {
   },
   watch: {
     error(val) {
-      if(val != null) {
-        this.snackbar = true
+      if (val != null) {
+        this.snackbar = true;
       } else {
-        this.snackbar = false
+        this.snackbar = false;
       }
     },
   },
-  created() {
-    let result = this.$crontab.addJob({
-      name: "api",
-      interval: {
-        seconds: '/1',
-      },
-      // job: this.$store.dispatch('BATCH')
-    })
-    return result
-  }
 };
 </script>

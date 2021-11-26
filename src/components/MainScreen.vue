@@ -34,10 +34,6 @@
         <v-card>
           <v-card-title>
             <h5 class="subheading mt-1">Детализация</h5>
-            <v-spacer></v-spacer>
-            <v-btn small color="success" @click="notifier()"
-              >Начать рассылку</v-btn
-            >
           </v-card-title>
           <v-data-table
             :headers="headers"
@@ -50,14 +46,9 @@
                 text(item.userStatus, item.status)
               }}</v-chip>
             </template>
-            <template v-slot:item.sms_status="{ item }">
-              <v-chip outlined>
-                {{item.sms_status ? item.sms_status : 0}}
-              </v-chip>
-            </template>
             <template v-slot:item.sms_price="{ item }">
               <v-chip outlined>
-                {{item.sms_price ? item.sms_price : 0}} ₽
+                {{ item.sms_price ? item.sms_price : 0 }} ₽
               </v-chip>
             </template>
           </v-data-table>
@@ -81,14 +72,11 @@ export default {
       },
       { text: "Клиент", value: "fio", sortable: false },
       { text: "Статус", value: "userStatus", sortable: false },
-      { text: "Отправлено СМС", value: "sms_status", sortable: false },
       { text: "Потрачено", value: "sms_price", sortable: false },
     ],
   }),
   methods: {
     text(userStatus, status) {
-      console.log('u = ' + userStatus);
-      console.log('s = ' + status);
       if (status == 0) {
         return "Новый";
       }
@@ -116,7 +104,7 @@ export default {
       if (userStatus == 2) {
         return "Доставлен";
       }
-      if(status == 6) {
+      if (status == 6) {
         return "Доставлен";
       }
       if (status == 2 && 5 && 9 && userStatus == 4) {
@@ -151,15 +139,12 @@ export default {
       if (userStatus == 2) {
         return "green";
       }
-       if(status == 6) {
+      if (status == 6) {
         return "green";
       }
       if (status == 2 && 5 && 9 && userStatus == 4) {
         return "yellow";
       }
-    },
-    notifier() {
-      this.$store.dispatch("API_SMS_NOTIFIER");
     },
   },
   computed: {

@@ -34,13 +34,10 @@ export default {
             return new Promise((resolve) => {
                 if (state.unsubscribeAuth)
                     state.unsubscribeAuth()
-
                 let unsubscribe = firebase.auth().onAuthStateChanged(function (user) {
                     dispatch('STATE_CHANGED', user)
-
                     resolve(user)
                 });
-
                 commit('SET_UNSUBSCRIBE_AUTH', unsubscribe)
             })
         },
@@ -59,6 +56,7 @@ export default {
         },
         SIGNIN({ commit }, payload) {
             commit('SET_PROCESSING', true)
+            commit('CLEAR_ERROR')
             firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
                 .then(() => {
                     commit('SET_PROCESSING', false)
@@ -66,7 +64,6 @@ export default {
                 .catch(function (error) {
                     commit('SET_PROCESSING', false)
                     commit('SET_ERROR', error.message)
-
                 })
         },
         SIGNOUT() {
@@ -77,9 +74,7 @@ export default {
             if (payload) {
                 commit('SET_USER', { uid: payload.uid, email: payload.email })
                 dispatch('LOAD_USER_DATA', payload.uid);
-                // server
                 dispatch('LOAD_FROM_DB_WB_DATA')
-                // dispatch('LOAD_FROM_DB_SMS_DATA')
             } else {
                 commit('UNSET_USER')
             }

@@ -3,7 +3,8 @@ import firebase from 'firebase';
 
 let defaultUserData = {
     balance: 0,
-    apiToken: null
+    apiToken: null,
+    start: false
 };
 
 export default {
@@ -19,10 +20,8 @@ export default {
         },
     },
     actions: {
-        LOAD_USER_DATA({ commit, getters, dispatch }) {
-
+        LOAD_USER_DATA({ commit, getters }) {
             commit('SET_PROCESSING', true)
-
             var userDataRef = firebase.database().ref('userData/' + getters.userId);
             try {
                 userDataRef.on('value', (snapshot) => {
@@ -32,7 +31,6 @@ export default {
                         userData = data;
                     }
                     commit('SET_USER_DATA', userData)
-                    dispatch('GET_WB_API')
                     commit('SET_PROCESSING', false)
                 })
             } catch (error) {
@@ -43,13 +41,13 @@ export default {
         },
         ADD_USER_API_TOKEN({ commit, getters }, payload) {
             commit('SET_PROCESSING', true)
-
             try {
-                firebase.database().ref('userData/' + getters.userId).update({
-                    apiToken: payload
-                });
-                commit('SET_PROCESSING', false)
-
+                firebase.database().ref('userData/' + getters.userId + '/apiToken/' + payload.index).update({
+                    name: payload.name,
+                    key: payload.key,
+                    status: 'На проверке',
+                    startDate: new Date(),
+                })
             }
             catch (e) {
                 commit('SET_ERROR', e);
@@ -57,28 +55,44 @@ export default {
                 throw e;
             }
         },
-        // server
-        // CHANGE_USER_BALANCE({ commit, getters }, payload) {
-        //     commit('SET_PROCESSING', true)
-
-        //     try {
-        //         firebase.database().ref('userData/' + getters.userId).update({
-        //             balance: getters.balance - payload
-        //         });
-        //         commit('SET_PROCESSING', false)
-
-        //     }
-        //     catch (e) {
-        //         commit('SET_ERROR', e);
-        //         commit('SET_PROCESSING', false);
-        //         throw e;
-        //     }
-        // }
-
+        UPDATE_USER_API_TOKEN({ commit, getters }, payload) {
+            commit('SET_PROCESSING', true)
+            try {
+                firebase.database().ref('userData/' + getters.userId + '/apiToken/' + payload.index).update({
+                    name: payload.item.name,
+                    key: payload.item.key,
+                    status: 'На проверке',
+                    startDate: new Date(),
+                })
+            }
+            catch (e) {
+                commit('SET_ERROR', e);
+                commit('SET_PROCESSING', false);
+                throw e;
+            }
+        },
+        DELETE_API_TOKEN({ commit, getters }, payload) {
+            commit('SET_PROCESSING', true);
+            if(payload != Object.keys(getters.apiToken).length) {
+                let arr = getters.apiToken;
+                arr.splice(payload, 1)
+                firebase.database().ref('userData/' + getters.userId + '/apiToken').remove()
+                firebase.database().ref('userData/' + getters.userId + '/apiToken').set(arr)
+            }
+            else {
+                try {
+                    firebase.database().ref('userData/' + getters.userId + '/apiToken/' + payload).remove()
+                }
+                catch (e) {
+                    commit('SET_ERROR', e);
+                    commit('SET_PROCESSING', false);
+                    throw e;
+                }
+            }
+        },
     },
-
     getters: {
         balance: (s) => s.userData.balance,
-        apiToken: (s) => s.userData.apiToken
+        apiToken: (s) => s.userData.apiToken,
     }
 }

@@ -1,10 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import firebase from 'firebase'
 import Home from '../views/Home.vue'
 import Signin from '../views/Signin.vue'
 import Signup from '../views/Signup.vue'
 import Store from '../store'
 import Settings from '../views/Settings.vue'
+import ForgotPassword from '../views/ForgotPassword'
 
 Vue.use(VueRouter)
 
@@ -14,6 +16,19 @@ const routes = [
     name: 'Home',
     component: Home,
     meta: { authRequired: true }
+  },
+  {
+    path: "/forgot-password",
+    name: "forgotPassword",
+    component: ForgotPassword,
+    beforeEnter(to, from, next) {
+      const user = firebase.auth().currentUser;
+      if (user) {
+        next({ name: "Home" });
+      } else {
+        next();
+      }
+    },
   },
   {
     path: '/signin',

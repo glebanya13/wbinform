@@ -3,7 +3,7 @@
     <v-row align="center" justify="center">
       <v-col cols="12" sm="12" md="6">
         <v-card class="elevation-4">
-          <v-card-title> Вход </v-card-title>
+          <v-card-title> Забыли пароль? </v-card-title>
           <v-alert type="warning" :value="error">
             {{ error }}
           </v-alert>
@@ -22,26 +22,10 @@
                     required
                   ></v-text-field>
                 </validation-provider>
-
-                <validation-provider
-                  v-slot="{ errors }"
-                  name="password"
-                  rules="required|min:6"
-                >
-                  <v-text-field
-                    v-model="password"
-                    :error-messages="errors"
-                    label="Пароль"
-                    required
-                    type="password"
-                  ></v-text-field>
-                </validation-provider>
                 <v-card-actions>
-                  <a @click="regform()">Регистрация</a>
                   <v-spacer></v-spacer>
-                  <v-btn type="submit" :disabled="invalid"> Подтвердить </v-btn>
+                  <v-btn type="submit" :disabled="invalid"> Восстановить </v-btn>
                 </v-card-actions>
-                  <a @click="forgotPassword()" class="mt-2">Забыли пароль?</a>
               </form>
             </validation-observer>
           </v-card-text>
@@ -52,6 +36,7 @@
 </template>
 
 <script>
+import firebase from "firebase";
 import { required, email, max, min } from "vee-validate/dist/rules";
 import {
   extend,
@@ -87,41 +72,32 @@ export default {
     ValidationProvider,
     ValidationObserver,
   },
-  data: () => ({
-    name: "",
-    email: "",
-    password: "",
-  }),
-  computed: {
-    error() {
-      return this.$store.getters.getError;
-    },
-    processing() {
-      return this.$store.getters.getProcessing;
-    },
-    isUserAuthenticated() {
-      return this.$store.getters.isUserAuthenticated;
-    },
-  },
-  watch: {
-    isUserAuthenticated(val) {
-      if (val === true) this.$router.push("/");
-    },
+  data() {
+    return {
+      email: "",
+      error: null,
+      emailSending: false,
+    };
   },
   methods: {
-    regform() {
-      this.$router.push("/signup");
-    },
     submit() {
-      this.$refs.observer.validate();
-      this.$store.dispatch("SIGNIN", {
-        email: this.email,
-        password: this.password,
-      });
+      if (!this.email) {
+        this.error = "Please type in a valid email address.";
+        return;
+      }
+      this.error = null;
+      this.emailSending = true;
+      firebase
+        .auth()
+        .sendPasswordResetEmail(this.email)
+        .then(() => {
+          this.emailSending = false;
+        })
+        .catch((error) => {
+          this.emailSending = false;
+          this.error = error.message;
+        });
     },
-    forgotPassword() {
-      this.$router.push("/forgot-password")
-    }
   },
 };
 </script>

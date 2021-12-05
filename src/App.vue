@@ -9,7 +9,6 @@
       {{ error }}
     </v-snackbar>
     <Navbar />
-    <Footer />
     <v-main>
       <router-view />
     </v-main>
@@ -18,12 +17,10 @@
 
 <script>
 import Navbar from "./components/Navbar.vue";
-import Footer from "./components/Footer.vue";
 
 export default {
   name: "App",
   components: {
-    Footer,
     Navbar,
   },
   data: () => ({

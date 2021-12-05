@@ -41,6 +41,7 @@ export default {
                 commit('SET_UNSUBSCRIBE_AUTH', unsubscribe)
             })
         },
+        // email methods
         SIGNUP({ commit }, payload) {
             commit('SET_PROCESSING', true)
             commit('CLEAR_ERROR')
@@ -72,9 +73,9 @@ export default {
         },
         STATE_CHANGED({ commit, dispatch }, payload) {
             if (payload) {
-                commit('SET_USER', { uid: payload.uid, email: payload.email })
-                dispatch('LOAD_USER_DATA', payload.uid);
-                dispatch('LOAD_FROM_DB_WB_DATA')
+                commit('SET_USER', { uid: payload.uid }) // email: payload.email
+                dispatch('LOAD_USER_DATA', payload.uid); // load user data
+                dispatch('LOAD_ORDERS') // load orders
             } else {
                 commit('UNSET_USER')
             }

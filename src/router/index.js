@@ -1,12 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import firebase from 'firebase'
 import Home from '../views/Home.vue'
-import Signin from '../views/Signin.vue'
 import Signup from '../views/Signup.vue'
 import Store from '../store'
+import Profile from '../views/Profile.vue'
 import Settings from '../views/Settings.vue'
-import ForgotPassword from '../views/ForgotPassword'
 
 Vue.use(VueRouter)
 
@@ -18,27 +16,15 @@ const routes = [
     meta: { authRequired: true }
   },
   {
-    path: "/forgot-password",
-    name: "forgotPassword",
-    component: ForgotPassword,
-    beforeEnter(to, from, next) {
-      const user = firebase.auth().currentUser;
-      if (user) {
-        next({ name: "Home" });
-      } else {
-        next();
-      }
-    },
-  },
-  {
-    path: '/signin',
-    name: 'Signin',
-    component: Signin
-  },
-  {
     path: '/signup',
     name: 'Signup',
     component: Signup
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: Profile,
+    meta: { authRequired: true }
   },
   {
     path: '/settings',
@@ -60,7 +46,7 @@ router.beforeEach((to, from, next) => {
         if (user)
           next()
         else
-          next('/signin')
+          next('/signup')
       } else {
         next()
       }

@@ -1,15 +1,15 @@
 import Vue from 'vue'
 import App from './App.vue'
-import router from './router'
-import store from './store'
-import vuetify from './plugins/vuetify'
-import firebase from 'firebase'
-import 'firebase/firestore'
-import VuetifyConfirm from 'vuetify-confirm'
+import router from './router' // router
+import store from './store' // store
+import vuetify from './plugins/vuetify' // vuetify
+import firebase from 'firebase' // firebase
+import 'firebase/firestore' // firestore
+import VuetifyConfirm from 'vuetify-confirm' // confirm
 
 Vue.config.productionTip = false
 
-Vue.use(VuetifyConfirm, {
+Vue.use(VuetifyConfirm, { // confirm modal settings
   vuetify,
   buttonTrueText: 'Да',
   buttonFalseText: 'Нет',
@@ -19,7 +19,7 @@ Vue.use(VuetifyConfirm, {
   property: '$confirm'
 })
 
-const firebaseConfig = {
+const firebaseConfig = { // db config
   apiKey: "AIzaSyAaxnX9Vc1TD3UeOOQm5ySEMKrU6XePL1k",
   authDomain: "wbinform-4398f.firebaseapp.com",
   projectId: "wbinform-4398f",
@@ -29,13 +29,13 @@ const firebaseConfig = {
   appId: "1:910885086655:web:568afe110c3104f2aaad0a"
 };
 
-const firebaseApp = firebase.initializeApp(firebaseConfig)
+const firebaseApp = firebase.initializeApp(firebaseConfig) // init
 var db = firebaseApp.database();
 
 var cdb = firebaseApp.firestore();
 
-Vue.$db = db
-Vue.$cdb = cdb
+Vue.$db = db // realtime db
+Vue.$cdb = cdb // firestore
 
 new Vue({
   router,

@@ -43,16 +43,13 @@
         </v-btn>
       </div>
       <div v-else>
-        <v-btn icon @click="loginform()">
-          <v-icon>mdi-lock-open</v-icon>
-        </v-btn>
         <v-btn icon @click="regform()">
-          <v-icon>mdi-pencil-box-multiple-outline</v-icon>
+          <v-icon>mdi-lock-open</v-icon>
         </v-btn>
       </div>
     </v-app-bar>
 
-    <v-navigation-drawer app width="100" class="purple darken-2">
+    <v-navigation-drawer app width="115" class="purple darken-2">
       <v-list v-if="isUserAuthenticated">
         <v-list-item
           v-for="link in links"
@@ -60,14 +57,20 @@
           router
           :to="link.route"
         >
+        
           <v-list-item-action>
-            <div class="ml-1">
-              <v-icon :title="link.text" class="white--text ml-4">{{
+            <div>
+              <v-icon :title="link.text" class="white--text ml-7">{{
                 link.icon
               }}</v-icon>
+              <p :class="`white--text ml-${link.ml}`">
+                {{ link.text }}
+              </p>
             </div>
           </v-list-item-action>
-          <v-list-item-content> </v-list-item-content>
+          <v-list-item-content>
+            
+          </v-list-item-content>
         </v-list-item>
       </v-list>
       <v-list v-else>
@@ -78,17 +81,18 @@
           :to="link.route"
         >
           <v-list-item-action>
-            <div class="ml-1">
-              <v-icon :title="link.text" class="white--text ml-4">{{
-                link.icon
-              }}</v-icon>
+            <div>
+              <v-icon class="white--text ml-6">{{ link.icon }}</v-icon>
+              <p class="white--text ml-4">
+                {{ link.text }}
+              </p>
             </div>
           </v-list-item-action>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
     <v-navigation-drawer
-      width="100"
+      width="115"
       v-model="drawer"
       app
       class="purple darken-2"
@@ -101,8 +105,13 @@
           :to="link.route"
         >
           <v-list-item-action>
-            <div class="ml-1">
-              <v-icon class="white--text ml-4">{{ link.icon }}</v-icon>
+            <div>
+              <v-icon :title="link.text" class="white--text ml-7">{{
+                link.icon
+              }}</v-icon>
+              <p :class="`white--text ml-${link.ml}`">
+                {{ link.text }}
+              </p>
             </div>
           </v-list-item-action>
           <v-list-item-content> </v-list-item-content>
@@ -119,6 +128,9 @@
           <v-list-item-action>
             <div class="ml-1">
               <v-icon class="white--text ml-4">{{ link.icon }}</v-icon>
+              <p class="white--text ml-2">
+                {{ link.text }}
+              </p>
             </div>
           </v-list-item-action>
           <v-list-item-content>
@@ -135,14 +147,14 @@ export default {
   data: () => ({
     drawer: false,
     links: [
-      { icon: "mdi-account", text: "Настройки", route: "/settings" },
-      { icon: "mdi-chart-bar", text: "Кабинет", route: "/" },
+      { icon: "mdi-account", text: "Кабинет", route: "/profile", ml: 3 },
+      { icon: "mdi-chart-bar", text: "Статистика", route: "/", ml: 0 },
+      { icon: "mdi-cog", text: "Настройки", route: "/settings", ml: 0 }
     ],
     reglinks: [
-      { icon: "mdi-lock-open", text: "Вход", route: "/signin" },
       {
-        icon: "mdi-pencil-box-multiple-outline",
-        text: "Регистрация",
+        icon: "mdi-lock-open",
+        text: "Вход",
         route: "/signup",
       },
     ],
@@ -167,9 +179,6 @@ export default {
     },
     regform() {
       this.$router.push("/signup");
-    },
-    loginform() {
-      this.$router.push("/signin");
     },
     paynament() {
       this.$store.dispatch("PAYNAMENT");

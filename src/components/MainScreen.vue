@@ -4,11 +4,11 @@
       <v-col cols="12" sm="12" md="4" class="mt-3">
         <v-card elevation="3" shaped>
           <v-row>
-            <v-col cols="4">
+            <v-col cols="4" class="mt-2">
               <v-icon x-large>mdi-cash</v-icon>
             </v-col>
             <v-col cols="5">
-              <h4 class="subheading mt-1">Баланс</h4>
+              <h3 class="subheading grey--text mt-1">Баланс</h3>
               <h3 class="purple--text darken-2">{{ Math.round(balance) }} ₽</h3>
             </v-col>
           </v-row>
@@ -17,11 +17,11 @@
       <v-col cols="12" sm="12" md="4" class="mt-3">
         <v-card elevation="3" shaped>
           <v-row>
-            <v-col cols="4">
+            <v-col cols="4" class="mt-2">
               <v-icon x-large>mdi-cash</v-icon>
             </v-col>
             <v-col cols="5">
-              <h4 class="subheading mt-1">Остаток СМС</h4>
+              <h3 class="subheading grey--text mt-1">Остаток СМС</h3>
               <h3 class="purple--text darken-2">{{ mailing }}</h3>
             </v-col>
           </v-row>
@@ -33,17 +33,27 @@
       <v-col cols="12" sm="12" md="8">
         <v-card>
           <v-card-title>
-            <h5 class="subheading mt-1">Детализация</h5>
+            <h4 class="subheading grey--text mt-1">Детализация</h4>
           </v-card-title>
+          <v-card-text>
+            <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="Search"
+              single-line
+              hide-details
+            ></v-text-field>
+          </v-card-text>
           <v-data-table
             :headers="headers"
             :items="apiToken ? orders : []"
             :items-per-page="5"
+            :search="search"
             class="elevation-1"
           >
-            <template v-slot:item.userStatus="{ item }">
+            <template v-slot:item.tableStatus="{ item }">
               <v-chip outlined :color="color(item.userStatus, item.status)">{{
-                text(item.userStatus, item.status)
+                item.tableStatus
               }}</v-chip>
             </template>
             <template v-slot:item.sms_price="{ item }">
@@ -63,6 +73,7 @@ export default {
   name: "MainScreen",
 
   data: () => ({
+    search: "", // filter by userStatus
     headers: [
       {
         text: "Номер заказа",
@@ -71,46 +82,11 @@ export default {
         sortable: false,
       },
       { text: "Клиент", value: "fio", sortable: false },
-      { text: "Статус", value: "userStatus", sortable: false },
+      { text: "Статус", value: "tableStatus", sortable: false },
       { text: "Потрачено", value: "sms_price", sortable: false },
     ],
   }),
   methods: {
-    text(userStatus, status) {
-      if (status == 0) {
-        return "Новый";
-      }
-      if (status == 8) {
-        return "На сборке";
-      }
-      if (status == 3) {
-        return "Отклонен";
-      }
-      if (userStatus == 3) {
-        return "Отменен";
-      }
-      if (userStatus == 1) {
-        return "Отменен";
-      }
-      if (userStatus == 5) {
-        return "Отменен";
-      }
-      if (userStatus == 1 && status == 1) {
-        return "Отменен";
-      }
-      if (status == 1) {
-        return "На сборке";
-      }
-      if (userStatus == 2) {
-        return "Доставлен";
-      }
-      if (status == 6) {
-        return "Доставлен";
-      }
-      if (status == 2 && 5 && 9 && userStatus == 4) {
-        return "На доставке";
-      }
-    },
     color(userStatus, status) {
       if (status == 0) {
         return;

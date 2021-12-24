@@ -3,21 +3,27 @@
     <div class="page-content">
       <v-data-table
         :headers="headers"
-        :items="orders"
+        :items="campaings"
         sort-by="calories"
         item-key="name"
       >
+        <template v-slot:item.name="{ item }">
+          <router-link :to="`/campaigns/${campaings.indexOf(item)}`">
+            <a style="color: black">{{ item.name }}</a>
+          </router-link>
+        </template>
+
         <template
           v-for="(col, i) in filters"
           v-slot:[`header.${i}`]="{ header }"
         >
           <div
             style="display: inline-block; padding: 16px 0"
-            :key="col.orderId"
+            :key="col.created"
           >
             {{ header.text }}
           </div>
-          <div style="float: right; margin-top: 8px" :key="col.orderId">
+          <div style="float: right; margin-top: 8px" :key="col.created">
             <v-menu
               :close-on-content-click="false"
               :nudge-width="200"
@@ -97,13 +103,13 @@
         <template v-slot:top>
           <v-toolbar flat color="white">
             <v-toolbar-title>
-              <h1 class="page-title">Детализация</h1>
+              <h1 class="page-title">Кампании</h1>
             </v-toolbar-title>
             <v-divider class="mx-4" inset vertical></v-divider>
           </v-toolbar>
         </template>
         <template v-slot:no-data>
-          <v-btn color="primary" @click="initialize">Обновить</v-btn>
+          <v-btn color="primary" @click="initialize()">Обновить</v-btn>
         </template>
       </v-data-table>
     </div>
@@ -112,53 +118,51 @@
 
 <script>
 export default {
-  name: "MainScreen",
-
-  data: () => ({
-    filters: { orderId: [], fio: [], tableStatus: [] },
-    activeFilters: {},
-    orders: [],
-  }),
+  data() {
+    return {
+      filters: { status: [] },
+      activeFilters: {},
+      campaings: [],
+    };
+  },
+  computed: {
+    headers() {
+      return [
+        {
+          text: "Кампания",
+          align: "start",
+          value: "name",
+        },
+        {
+          text: "Создан",
+          value: "dateCreated",
+        },
+        {
+          text: "Статус",
+          value: "status",
+          filter: (value) => {
+            return this.activeFilters.status
+              ? this.activeFilters.status.includes(value)
+              : true;
+          },
+        },
+        { text: "Приостановлено", value: "stop" },
+        { text: "Архивировано", value: "archive" },
+      ];
+    },
+    campaingsFromDB() {
+      return this.$store.getters.campaings;
+    },
+  },
   methods: {
-    color(userStatus, status) {
-      if (status == 0) {
-        return;
-      }
-      if (status == 6 && 8) {
-        return "blue";
-      }
-      if (status == 3) {
-        return "red";
-      }
-      if (userStatus == 3) {
-        return "red";
-      }
-      if (userStatus == 1) {
-        return "red";
-      }
-      if (userStatus == 5) {
-        return "red";
-      }
-      if (status == 1 && userStatus != 1) {
-        return "blue";
-      }
-      if (status == 1) {
-        return "blue";
-      }
-      if (userStatus == 2) {
-        return "green";
-      }
-      if (status == 6) {
-        return "green";
-      }
-      if (status == 2 && 5 && 9 && userStatus == 4) {
-        return "yellow";
-      }
+    initialize() {
+      this.campaings = this.campaingsFromDB;
+      console.log(this.campaingsFromDB);
     },
     initFilters() {
       var col;
       for (col in this.filters) {
-        this.filters[col] = this.orders
+        this.filters[col] = this.campaings
           .map((d) => {
             return d[col];
           })
@@ -170,7 +174,7 @@ export default {
     },
 
     toggleAll(col) {
-      this.activeFilters[col] = this.orders
+      this.activeFilters[col] = this.campaings
         .map((d) => {
           return d[col];
         })
@@ -182,57 +186,11 @@ export default {
     clearAll(col) {
       this.activeFilters[col] = [];
     },
-
-    initialize() {
-      this.orders = this.ordersFromDB;
-    },
-  },
-  computed: {
-    headers() {
-      return [
-        {
-          text: "Номер заказа",
-          align: "start",
-          sortable: true,
-          value: "orderId",
-          filter: (value) => {
-            return this.activeFilters.orderId
-              ? this.activeFilters.orderId.includes(value)
-              : true;
-          },
-        },
-        {
-          text: "Клиент",
-          value: "fio",
-          filter: (value) => {
-            return this.activeFilters.fio
-              ? this.activeFilters.fio.includes(value)
-              : true;
-          },
-        },
-        {
-          text: "Статус",
-          value: "tableStatus",
-          filter: (value) => {
-            return this.activeFilters.tableStatus
-              ? this.activeFilters.tableStatus.includes(value)
-              : true;
-          },
-        },
-        { text: "Потрачено", value: "sms_price" },
-      ];
-    },
-    ordersFromDB() {
-      return this.$store.getters.orders;
-    },
   },
   watch: {
-    orders() {
+    campaings() {
       this.initFilters();
     },
-  },
-  created() {
-    this.orders = this.ordersFromDB;
   },
 };
 </script>
@@ -255,22 +213,62 @@ export default {
   flex: 1;
   background-color: #f2f2f2;
 }
-.v-list--dense .v-list-item,
-.v-list-item--dense {
-  min-height: 20px !important;
-  height: 2rem;
+.form__control {
+  max-width: 288px;
 }
-
-.v-application--is-ltr .v-list-item__action:first-child,
-.v-application--is-ltr .v-list-item__icon:first-child {
-  margin-right: 0.5rem !important;
+.form__input {
+  padding-right: 16px;
 }
-
-.v-list-item--link {
-  transition: background-color 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+.form__input input {
+  font-size: 16px;
+  outline: none;
+  box-sizing: border-box;
+  width: 100%;
 }
-
-.v-list-item--link:hover {
-  background-color: rgba(0, 0, 0, 0.13);
+.combobox__label {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -ms-flex-align: center;
+  align-items: center;
+}
+.form__input {
+  padding: 12px;
+  border-radius: 4px;
+  border: 1px solid #d5d5d5;
+  font-size: 16px;
+  outline: none;
+  min-height: 44px;
+  box-sizing: border-box;
+  width: 100%;
+}
+.btn--white {
+  background-color: #fff;
+}
+.btn--gray,
+.btn--white {
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 400;
+  height: 44px;
+  border: 1px solid #d1cfd7;
+}
+.btn {
+  padding: 10px 24px;
+  border-radius: 4px;
+  background-color: #d5d5d5;
+  font-size: 16px;
+  color: #000000;
+  font-weight: 400;
+  cursor: pointer;
+  transition: opacity, background-color, color 0.15s ease-in-out;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+a {
+  text-decoration: none;
 }
 </style>

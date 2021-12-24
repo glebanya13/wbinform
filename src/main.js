@@ -19,14 +19,14 @@ Vue.use(VuetifyConfirm, { // confirm modal settings
   property: '$confirm'
 })
 
-const firebaseConfig = { // db config
-  apiKey: "AIzaSyAaxnX9Vc1TD3UeOOQm5ySEMKrU6XePL1k",
-  authDomain: "wbinform-4398f.firebaseapp.com",
-  projectId: "wbinform-4398f",
-  storageBucket: "wbinform-4398f.appspot.com",
-  messagingSenderId: "910885086655",
-  databaseURL: "https://wbinform-4398f-default-rtdb.firebaseio.com/",
-  appId: "1:910885086655:web:568afe110c3104f2aaad0a"
+const firebaseConfig = {
+  apiKey: "AIzaSyCZsQfsWko0Pem76oPMvtEC_NgO9vSOQ0Y",
+  authDomain: "wbinform-93078.firebaseapp.com",
+  databaseURL: "https://wbinform-93078-default-rtdb.firebaseio.com",
+  projectId: "wbinform-93078",
+  storageBucket: "wbinform-93078.appspot.com",
+  messagingSenderId: "320039449657",
+  appId: "1:320039449657:web:936e47884a11c4220ec9e8"
 };
 
 const firebaseApp = firebase.initializeApp(firebaseConfig) // init

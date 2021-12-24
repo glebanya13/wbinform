@@ -125,7 +125,7 @@ export default {
         });
     },
     verifyOtp() {
-      if (this.phNo.length != 13 || this.otp.length != 6) {
+      if (this.phNo.length != 16 || this.otp.length != 6) {
         alert("Неверный формат номера телефона / кода!");
       } else {
         var code = this.otp;

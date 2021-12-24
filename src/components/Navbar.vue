@@ -1,141 +1,90 @@
 <template>
   <nav>
-    <v-app-bar elevation="0" dense app>
-      <v-app-bar-nav-icon
-        class="hidden-lg-and-up"
-        @click="drawer = !drawer"
-      ></v-app-bar-nav-icon>
-      <v-spacer></v-spacer>
-      <div v-if="isUserAuthenticated">
-        <v-dialog transition="dialog-top-transition" max-width="600">
-          <template v-slot:activator="{ on, attrs }">
-            <v-chip outlined v-bind="attrs" v-on="on" color="purple"
-              >Баланс: {{ Math.round(balance) }} ₽</v-chip
-            >
-          </template>
-          <template v-slot:default="dialog">
-            <v-card>
-              <v-toolbar color="purple darken-2" dark
-                >Пополнение баланса</v-toolbar
-              >
-              <v-container fluid>
-                <v-row align="center" justify="center">
-                  <v-col cols="5" sm="3" md="3" lg="3">
-                    <v-btn
-                      @click="paynament()"
-                      color="purple darken-2"
-                      dark
-                      type="submit"
-                      >Оплатить</v-btn
-                    >
-                  </v-col>
-                </v-row>
-              </v-container>
-
-              <v-card-actions class="justify-end">
-                <v-btn text @click="dialog.value = false">Закрыть</v-btn>
-              </v-card-actions>
-            </v-card>
-          </template>
-        </v-dialog>
-        <v-btn icon @click="logout()">
-          <v-icon>mdi-exit-to-app</v-icon>
-        </v-btn>
-      </div>
-      <div v-else>
-        <v-btn icon @click="regform()">
-          <v-icon>mdi-lock-open</v-icon>
-        </v-btn>
-      </div>
-    </v-app-bar>
-
-    <v-navigation-drawer app width="115" class="purple darken-2">
-      <v-list v-if="isUserAuthenticated">
-        <v-list-item
-          v-for="link in links"
-          :key="link.text"
-          router
-          :to="link.route"
-        >
-        
-          <v-list-item-action>
-            <div>
-              <v-icon :title="link.text" class="white--text ml-7">{{
-                link.icon
-              }}</v-icon>
-              <p :class="`white--text ml-${link.ml}`">
-                {{ link.text }}
-              </p>
-            </div>
-          </v-list-item-action>
-          <v-list-item-content>
-            
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-      <v-list v-else>
-        <v-list-item
-          v-for="link in reglinks"
-          :key="link.text"
-          router
-          :to="link.route"
-        >
-          <v-list-item-action>
-            <div>
-              <v-icon class="white--text ml-6">{{ link.icon }}</v-icon>
-              <p class="white--text ml-4">
-                {{ link.text }}
-              </p>
-            </div>
-          </v-list-item-action>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
     <v-navigation-drawer
-      width="115"
-      v-model="drawer"
       app
-      class="purple darken-2"
+      permanent
+      color="#3a0078"
+      v-if="isUserAuthenticated"
     >
-      <v-list v-if="isUserAuthenticated">
-        <v-list-item
-          v-for="link in links"
-          :key="link.text"
-          router
-          :to="link.route"
-        >
-          <v-list-item-action>
-            <div>
-              <v-icon :title="link.text" class="white--text ml-7">{{
-                link.icon
-              }}</v-icon>
-              <p :class="`white--text ml-${link.ml}`">
-                {{ link.text }}
-              </p>
-            </div>
-          </v-list-item-action>
-          <v-list-item-content> </v-list-item-content>
-        </v-list-item>
-      </v-list>
+      <v-layout column align-center v-if="isUserAuthenticated">
+        <v-flex class="mt-5">
+          <div class="card">
+            <div class="data">
+              <label class="left-menu__wallet__title">Счёт:</label>
+              <div class="left-menu__wallet__text">
+                {{ Math.round(balance) }} ₽
+              </div>
 
-      <v-list v-else>
-        <v-list-item
-          v-for="link in reglinks"
-          :key="link.text"
-          router
-          :to="link.route"
-        >
-          <v-list-item-action>
-            <div class="ml-1">
-              <v-icon class="white--text ml-4">{{ link.icon }}</v-icon>
-              <p class="white--text ml-2">
-                {{ link.text }}
-              </p>
+              <label class="left-menu__wallet__title">Взаимозачёт:</label>
+              <div class="left-menu__wallet__text">0 ₽</div>
             </div>
-          </v-list-item-action>
+          </div>
+        </v-flex>
+      </v-layout>
+
+      <v-list v-if="isUserAuthenticated">
+        <v-list-item router to="/profile">
+          <v-list-item-icon>
+            <v-icon class="white--text">mdi-account</v-icon>
+          </v-list-item-icon>
           <v-list-item-content>
-            <h4 class="white--text">{{ link.text }}</h4>
+            <v-list-item-title class="white--text"> Кабинет</v-list-item-title>
           </v-list-item-content>
+        </v-list-item>
+        <v-list-item router to="/">
+          <v-list-item-icon>
+            <v-icon class="white--text">mdi-chart-bar</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title class="white--text">
+              Статистика</v-list-item-title
+            >
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-list-group
+          v-if="isUserAuthenticated"
+          :value="false"
+          no-action
+          color="white"
+        >
+          <template v-slot:activator>
+            <v-list-item-content>
+              <v-list-item-title class="white--text">
+                <v-icon class="mr-5 white--text">mdi-table</v-icon>
+                Мои кампании</v-list-item-title
+              >
+            </v-list-item-content>
+          </template>
+
+          <v-list-item router to="/campaign/create">
+            <v-list-item-title class="white--text"
+              >Создание кампании</v-list-item-title
+            >
+          </v-list-item>
+          <v-list-item router to="/campaigns">
+            <v-list-item-title class="white--text"
+              >Список кампаний</v-list-item-title
+            >
+          </v-list-item>
+        </v-list-group>
+
+        <!-- <v-list-item router to="/settings">
+          <v-list-item-icon>
+            <v-icon class="white--text">mdi-cog</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title class="white--text">
+              Настройки</v-list-item-title
+            >
+          </v-list-item-content>
+        </v-list-item> -->
+
+        <v-list-item @click="logout()">
+          <v-list-item-icon>
+            <v-icon class="white--text">mdi-exit-to-app</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title class="white--text">Выйти</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
@@ -146,18 +95,6 @@
 export default {
   data: () => ({
     drawer: false,
-    links: [
-      { icon: "mdi-account", text: "Кабинет", route: "/profile", ml: 3 },
-      { icon: "mdi-chart-bar", text: "Статистика", route: "/", ml: 0 },
-      { icon: "mdi-cog", text: "Настройки", route: "/settings", ml: 0 }
-    ],
-    reglinks: [
-      {
-        icon: "mdi-lock-open",
-        text: "Вход",
-        route: "/signup",
-      },
-    ],
   }),
   computed: {
     balance() {
@@ -186,3 +123,36 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+label {
+  margin: 0;
+  border: 0;
+  padding: 0;
+  vertical-align: middle;
+  white-space: normal;
+  background: none;
+  line-height: 1;
+}
+.card {
+  width: 240px;
+  padding: 12px 20px;
+  background: #5c2f8e;
+  border-radius: 6px;
+  display: block;
+}
+
+.left-menu__wallet__title {
+  color: #fff;
+  opacity: 0.5;
+  display: flex;
+}
+.left-menu__wallet__text {
+  margin-top: 4px;
+  display: flex;
+  font-size: 16px;
+  line-height: 20px;
+  color: #fff;
+  cursor: pointer;
+}
+</style>

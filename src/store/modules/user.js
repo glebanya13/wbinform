@@ -76,6 +76,7 @@ export default {
                 commit('SET_USER', { uid: payload.uid }) // email: payload.email
                 dispatch('LOAD_USER_DATA', payload.uid); // load user data
                 dispatch('LOAD_ORDERS') // load orders
+                dispatch('LOAD_CAMPAINGS') // load campaings
             } else {
                 commit('UNSET_USER')
             }

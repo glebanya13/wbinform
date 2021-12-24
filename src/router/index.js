@@ -5,6 +5,9 @@ import Signup from '../views/Signup.vue'
 import Store from '../store'
 import Profile from '../views/Profile.vue'
 import Settings from '../views/Settings.vue'
+import CreateCampaing from '../views/CreateCampaing.vue'
+import Campaings from '../views/Campaings.vue'
+import Campaing from '../views/Campaing.vue'
 
 Vue.use(VueRouter)
 
@@ -30,6 +33,25 @@ const routes = [
     path: '/settings',
     name: 'Settings',
     component: Settings,
+    meta: { authRequired: true }
+  },
+  {
+    path: '/campaign/create',
+    name: 'create-campaign',
+    component: CreateCampaing,
+    meta: { authRequired: true }
+  },
+  {
+    path: '/campaigns',
+    name: 'campaigns',
+    component: Campaings,
+    meta: { authRequired: true }
+  },
+  {
+    path: '/campaigns/:id',
+    name: 'campaign:id',
+    component: Campaing,
+    props: true,
     meta: { authRequired: true }
   },
 ]

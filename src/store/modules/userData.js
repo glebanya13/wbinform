@@ -45,7 +45,7 @@ export default {
             }
         },
         // add api data
-        ADD_USER_API_TOKEN({ commit, getters }, payload) {
+        ADD_USER_API_TOKEN({ commit, getters, dispatch }, payload) {
             commit('SET_PROCESSING', true)
             try {
                 firebase.database().ref('userData/' + getters.userId + '/apiToken/' + payload.index).update({
@@ -53,6 +53,10 @@ export default {
                     key: payload.key,
                     status: 'На проверке',
                     startDate: new Date(),
+                }).then(() => {
+                    if (getters.methods === undefined) {
+                        dispatch("ADD_METHODS_DATA")
+                    }
                 })
             }
             catch (e) {
@@ -159,7 +163,7 @@ export default {
                         }
 
                         orders.push(order)
-                        
+
                         // status for table
 
                         orders.forEach((order) => {

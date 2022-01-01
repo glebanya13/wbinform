@@ -31,6 +31,16 @@
             <v-list-item-title class="white--text"> Кабинет</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+
+        <v-list-item router to="/balance">
+          <v-list-item-icon>
+            <v-icon class="white--text">mdi-wallet</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title class="white--text">Пополнение баланса</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
         <v-list-item router to="/">
           <v-list-item-icon>
             <v-icon class="white--text">mdi-chart-bar</v-icon>
@@ -57,28 +67,17 @@
             </v-list-item-content>
           </template>
 
-          <v-list-item router to="/campaign/create">
+          <v-list-item router to="/campaing/create">
             <v-list-item-title class="white--text"
               >Создание кампании</v-list-item-title
             >
           </v-list-item>
-          <v-list-item router to="/campaigns">
+          <v-list-item router to="/campaings">
             <v-list-item-title class="white--text"
               >Список кампаний</v-list-item-title
             >
           </v-list-item>
         </v-list-group>
-
-        <!-- <v-list-item router to="/settings">
-          <v-list-item-icon>
-            <v-icon class="white--text">mdi-cog</v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title class="white--text">
-              Настройки</v-list-item-title
-            >
-          </v-list-item-content>
-        </v-list-item> -->
 
         <v-list-item @click="logout()">
           <v-list-item-icon>
@@ -116,9 +115,6 @@ export default {
     },
     regform() {
       this.$router.push("/signup");
-    },
-    paynament() {
-      this.$store.dispatch("PAYNAMENT");
     },
   },
 };

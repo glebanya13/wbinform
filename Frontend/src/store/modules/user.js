@@ -77,6 +77,7 @@ export default {
                 dispatch('LOAD_USER_DATA', payload.uid); // load user data
                 dispatch('LOAD_ORDERS') // load orders
                 dispatch('LOAD_CAMPAINGS') // load campaings
+                dispatch('LOAD_BRANDS') // load brands
             } else {
                 commit('UNSET_USER')
             }

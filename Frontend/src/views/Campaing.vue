@@ -2,10 +2,10 @@
   <div class="page-content">
     <div class="content">
       <div class="breadcrumb">
-        <router-link to="/campaigns"
+        <router-link to="/campaings"
           ><button class="btn btn--outline">←&nbsp;Назад</button></router-link
         >
-        <router-link to="/campaigns">
+        <router-link to="/campaings">
           <span class="breadcrumb__item ng-star-inserted"
             ><a class="breadcrumb__link ng-star-inserted" href="#">Кампании</a
             ><span class="breadcrumb__devider ng-star-inserted"
@@ -48,7 +48,7 @@
                         <v-text-field
                           v-model="campaing.name"
                           :error-messages="errors"
-                          label="Name"
+                          label="Название кампании"
                           required
                           outlined
                         ></v-text-field>
@@ -74,10 +74,18 @@
           </v-dialog>
 
           <button
+            v-if="campaing.status == 'Идут показы'"
             class="btn btn--outline m-l-24 ng-star-inserted"
             @click="setDateCompletion()"
           >
             Завершить кампанию
+          </button>
+          <button
+            v-else
+            class="btn btn--outline m-l-24 ng-star-inserted"
+            @click="setDateReturn()"
+          >
+            Возобновить
           </button>
         </h3>
         <div class="m-t-24 ng-star-inserted">
@@ -87,85 +95,18 @@
           </div>
         </div>
       </div>
-      <h1 class="m-t-48 ng-star-inserted">Управление рекламой в поиске</h1>
-      <div
-        class="m-t-56 text--twenty text--bold l-h-28 ng-star-inserted"
-        style="max-width: 669px"
-      >
-        Задайте бюджет, который Вы хотите потратить на рекламу и укажите ставку
-        для каждой группы предметов
-      </div>
-      <div
-        class="form__control m-t-24 flex flex--align-flex-end ng-star-inserted"
-      >
-        <div>
-          <label class="form">Бюджет</label>
-          <div class="flex flex--align-items-center m-l-2">
-            <div>{{ campaing.balance }}&nbsp;₽</div>
-            <v-dialog v-model="editDialog" persistent max-width="600px">
-              <template v-slot:activator="{ on, attrs }">
-                <div
-                  class="icon icon__pencil-create m-l-6 ng-star-inserted"
-                  v-bind="attrs"
-                  v-on="on"
-                ></div>
-              </template>
-              <v-card class="elevation-4">
-                <v-toolbar color="purple darken-2" dark flat>
-                  <v-toolbar-title>Поменять название кампании</v-toolbar-title>
-                </v-toolbar>
-                <v-card-text>
-                  <v-container>
-                    <validation-observer ref="observer" v-slot="{ invalid }">
-                      <form @submit.prevent="send()">
-                        <validation-provider
-                          v-slot="{ errors }"
-                          name="name"
-                          rules="required"
-                        >
-                          <v-text-field
-                            v-model="campaing.name"
-                            :error-messages="errors"
-                            label="Name"
-                            required
-                            outlined
-                          ></v-text-field>
-                        </validation-provider>
-                        <v-card-actions>
-                          <v-spacer></v-spacer>
-                          <v-btn color="red" dark @click="closeEditDialog()">
-                            Отмена
-                          </v-btn>
-                          <v-btn
-                            class="float-right"
-                            type="send"
-                            :disabled="invalid"
-                          >
-                            Подтвердить
-                          </v-btn>
-                        </v-card-actions>
-                      </form>
-                    </validation-observer>
-                  </v-container>
-                </v-card-text>
-              </v-card>
-            </v-dialog>
-          </div>
-          <v-checkbox
-            v-model="checkbox"
-            label="Установить бюджет Вашей кампании?"
-          ></v-checkbox>
-        </div>
-      </div>
       <div class="m-t-32 ng-star-inserted">
         <label>Группы предметов </label>
-        <div><span> семена </span></div>
+        <div>
+          <span> {{ category }} </span>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import firebase from "firebase";
 import { required } from "vee-validate/dist/rules";
 import {
   extend,
@@ -189,7 +130,9 @@ export default {
   data() {
     return {
       editDialog: false,
+      editDialog1: false,
       checkbox: false,
+      balanceRules: [(v) => (v && v >= 100) || "Минимальный бюджет 100₽"],
     };
   },
   computed: {
@@ -199,6 +142,16 @@ export default {
     campaing() {
       return this.campaingsFromDB[this.$route.params.id] || "";
     },
+    check() {
+      return this.campaingsFromDB[this.$route.params.id]
+        ? this.campaingsFromDB[this.$route.params.id].budget
+        : "";
+    },
+    category() {
+      return this.campaingsFromDB[this.$route.params.id]
+        ? this.campaingsFromDB[this.$route.params.id].category.toString()
+        : "";
+    },
   },
   methods: {
     send() {
@@ -207,12 +160,36 @@ export default {
         index: Number(this.$route.params.id),
       });
       this.editDialog = false;
+      this.editDialog1 = false;
+    },
+    changeBudget(check) {
+      try {
+        firebase
+          .database()
+          .ref(
+            "userData/" +
+              this.$store.getters.userId +
+              "/campaings/" +
+              this.$route.params.id
+          )
+          .update({
+            budget: !check,
+          });
+      } catch (e) {
+        console.log(e);
+      }
     },
     closeEditDialog() {
       this.editDialog = false;
+      this.editDialog1 = false;
       this.$store.dispatch("LOAD_CAMPAINGS");
     },
-    setDateCompletion() {},
+    setDateCompletion() {
+      this.$store.dispatch("COMPLETE_CAMPAING", this.$route.params.id);
+    },
+    setDateReturn() {
+      this.$store.dispatch("RETURN_CAMPAING", this.$route.params.id);
+    },
   },
 };
 </script>
@@ -360,7 +337,6 @@ h3 .icon {
 }
 .status--9 {
   font-weight: bold;
-  color: #067b00;
 }
 
 .text--bigger {

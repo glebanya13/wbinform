@@ -120,41 +120,6 @@ export default {
     orders: [],
   }),
   methods: {
-    color(userStatus, status) {
-      if (status == 0) {
-        return;
-      }
-      if (status == 6 && 8) {
-        return "blue";
-      }
-      if (status == 3) {
-        return "red";
-      }
-      if (userStatus == 3) {
-        return "red";
-      }
-      if (userStatus == 1) {
-        return "red";
-      }
-      if (userStatus == 5) {
-        return "red";
-      }
-      if (status == 1 && userStatus != 1) {
-        return "blue";
-      }
-      if (status == 1) {
-        return "blue";
-      }
-      if (userStatus == 2) {
-        return "green";
-      }
-      if (status == 6) {
-        return "green";
-      }
-      if (status == 2 && 5 && 9 && userStatus == 4) {
-        return "yellow";
-      }
-    },
     initFilters() {
       var col;
       for (col in this.filters) {

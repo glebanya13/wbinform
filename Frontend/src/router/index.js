@@ -4,7 +4,7 @@ import Home from '../views/Home.vue'
 import Signup from '../views/Signup.vue'
 import Store from '../store'
 import Profile from '../views/Profile.vue'
-import Settings from '../views/Settings.vue'
+import Balance from '../views/Balance.vue'
 import CreateCampaing from '../views/CreateCampaing.vue'
 import Campaings from '../views/Campaings.vue'
 import Campaing from '../views/Campaing.vue'
@@ -30,26 +30,27 @@ const routes = [
     meta: { authRequired: true }
   },
   {
-    path: '/settings',
-    name: 'Settings',
-    component: Settings,
+    path: '/balance',
+    name: 'Balance',
+    component: Balance,
     meta: { authRequired: true }
   },
+  // Campaing
   {
-    path: '/campaign/create',
+    path: '/campaing/create',
     name: 'create-campaign',
     component: CreateCampaing,
     meta: { authRequired: true }
   },
   {
-    path: '/campaigns',
+    path: '/campaings',
     name: 'campaigns',
     component: Campaings,
     meta: { authRequired: true }
   },
   {
-    path: '/campaigns/:id',
-    name: 'campaign:id',
+    path: '/campaings/:id',
+    name: 'campaing:id',
     component: Campaing,
     props: true,
     meta: { authRequired: true }

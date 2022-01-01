@@ -51,6 +51,7 @@ export default {
                 firebase.database().ref('userData/' + getters.userId + '/apiToken/' + payload.index).update({
                     name: payload.name,
                     key: payload.key,
+                    key_x64: payload.key_x64,
                     status: 'На проверке',
                     startDate: new Date(),
                 }).then(() => {
@@ -72,6 +73,7 @@ export default {
                 firebase.database().ref('userData/' + getters.userId + '/apiToken/' + payload.index).update({
                     name: payload.item.name,
                     key: payload.item.key,
+                    key_x64: payload.item.key_x64,
                     status: 'На проверке',
                     startDate: new Date(),
                 })

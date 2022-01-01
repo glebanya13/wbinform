@@ -3,10 +3,6 @@ const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 admin.initializeApp();
 
-function getText() {
-  console.log("lox");
-}
-
 exports.addMessage = functions.https.onRequest((req, res) => {
   const original = req.query.text;
 

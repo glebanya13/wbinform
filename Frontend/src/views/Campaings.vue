@@ -8,7 +8,7 @@
         item-key="name"
       >
         <template v-slot:item.name="{ item }">
-          <router-link :to="`/campaigns/${campaings.indexOf(item)}`">
+          <router-link :to="`/campaings/${campaings.indexOf(item)}`">
             <a style="color: black">{{ item.name }}</a>
           </router-link>
         </template>
@@ -113,6 +113,14 @@
         </template>
       </v-data-table>
     </div>
+    <v-snackbar v-model="snackbar">
+      <template v-slot:action="{ attrs }">
+        <v-btn color="red" text v-bind="attrs" @click="snackbar = false">
+          Close
+        </v-btn>
+      </template>
+      {{ snackbarText }}
+    </v-snackbar>
   </div>
 </template>
 
@@ -123,6 +131,8 @@ export default {
       filters: { status: [] },
       activeFilters: {},
       campaings: [],
+      snackbar: false,
+      snackbarText: "",
     };
   },
   computed: {
@@ -146,7 +156,7 @@ export default {
               : true;
           },
         },
-        { text: "Приостановлено", value: "stop" },
+        { text: "Приостановлено", value: "dateCompletion" },
         { text: "Архивировано", value: "archive" },
       ];
     },
@@ -156,8 +166,12 @@ export default {
   },
   methods: {
     initialize() {
-      this.campaings = this.campaingsFromDB;
-      console.log(this.campaingsFromDB);
+      if (this.campaingsFromDB) {
+        this.campaings = this.campaingsFromDB;
+      } else {
+        this.snackbar = true;
+        this.snackbarText = "У Вас нет кампаний";
+      }
     },
     initFilters() {
       var col;

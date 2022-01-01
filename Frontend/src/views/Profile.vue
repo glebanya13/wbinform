@@ -29,7 +29,20 @@
                       <v-text-field
                         v-model="name"
                         :error-messages="errors"
-                        label="Name"
+                        label="Название ключа"
+                        required
+                        outlined
+                      ></v-text-field>
+                    </validation-provider>
+                    <validation-provider
+                      v-slot="{ errors }"
+                      name="key_x64"
+                      rules="required"
+                    >
+                      <v-text-field
+                        v-model="key_x64"
+                        :error-messages="errors"
+                        label="Ключ для работы с API статистики x64"
                         required
                         outlined
                       ></v-text-field>
@@ -42,7 +55,7 @@
                       <v-text-field
                         v-model="key"
                         :error-messages="errors"
-                        label="ApiKey"
+                        label="Токен"
                         required
                         outlined
                       ></v-text-field>
@@ -129,7 +142,20 @@
                                         <v-text-field
                                           v-model="item.name"
                                           :error-messages="errors"
-                                          label="Name"
+                                          label="Название ключа"
+                                          required
+                                          outlined
+                                        ></v-text-field>
+                                      </validation-provider>
+                                      <validation-provider
+                                        v-slot="{ errors }"
+                                        name="key_x64"
+                                        rules="required"
+                                      >
+                                        <v-text-field
+                                          v-model="item.key_x64"
+                                          :error-messages="errors"
+                                          label="Ключ для работы с API статистики x64"
                                           required
                                           outlined
                                         ></v-text-field>
@@ -142,7 +168,7 @@
                                         <v-text-field
                                           v-model="item.key"
                                           :error-messages="errors"
-                                          label="ApiKey"
+                                          label="Токен"
                                           required
                                           outlined
                                         ></v-text-field>
@@ -216,7 +242,8 @@ export default {
     addDialog: false, // add api data modal
     editDialog: false, // edit api data modal
     name: "", // api name
-    key: "", // api key
+    key: "", // api token
+    key_x64: "", // api key_x64
   }),
   methods: {
     submit(item, index) {
@@ -230,12 +257,14 @@ export default {
       if (!apiToken) {
         this.$store.dispatch("ADD_USER_API_TOKEN", {
           key: this.key,
+          key_x64: this.key_x64,
           name: this.name,
           index: 0,
         });
       } else {
         this.$store.dispatch("ADD_USER_API_TOKEN", {
           key: this.key,
+          key_x64: this.key_x64,
           name: this.name,
           index: Object.keys(apiToken).length,
         });

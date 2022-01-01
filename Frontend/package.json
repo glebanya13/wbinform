@@ -9,9 +9,11 @@
   },
   "dependencies": {
     "@mdi/font": "^6.4.95",
+    "axios": "^0.24.0",
     "core-js": "^3.6.5",
     "firebase": "^8.10.0",
     "node-robokassa": "0.0.0",
+    "robo-kassa": "0.0.2",
     "sms_ru": "0.0.1",
     "vee-validate": "^3.4.13",
     "vue": "^2.6.11",

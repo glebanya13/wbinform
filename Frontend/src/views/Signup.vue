@@ -149,12 +149,6 @@ body {
   width: 100%;
 }
 .login-box {
-  background: rgba(214, 208, 208, 0.22);
-  border-radius: 16px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(6.5px);
-  -webkit-backdrop-filter: blur(6.5px);
-  border: 1px solid rgba(214, 208, 208, 0.3);
   height: 480px;
   width: 450px;
 }

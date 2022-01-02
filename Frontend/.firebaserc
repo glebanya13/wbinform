@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "wbinform-4398f"
-  }
+    "default": "wbinform-93078",
+    "staging": "wbinform-93078"
+  },
+  "targets": {}
 }

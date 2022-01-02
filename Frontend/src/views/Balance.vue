@@ -4,28 +4,33 @@
       <v-card>
         <v-toolbar flat color="white">
           <v-toolbar-title>
-            <h1 class="page-title">Создание кампании</h1>
+            <h1 class="page-title">Пополните баланс</h1>
           </v-toolbar-title>
         </v-toolbar>
         <v-card-text>
           <h3 class="ng-star-inserted">Введите сумму пополнения</h3>
           <form action="">
-          <div class="addsumma">
-            <input
-              type="number"
-              name="summa"
-              v-model="balance"
-              class="summa"
-              placeholder="Введите сумму"
-              required
-              min="100"
-            />
-          </div>
-          <div class="addBalance">
-            <v-btn class="btn mt-8" color="#2fc7f7" @click="paynament()" :disabled="disabled">
-              Пополнить баланс
-            </v-btn>
-          </div>
+            <div class="addsumma">
+              <input
+                type="number"
+                name="summa"
+                v-model="balance"
+                class="summa"
+                placeholder="Введите сумму"
+                required
+                min="100"
+              />
+            </div>
+            <div class="addBalance">
+              <v-btn
+                class="btn mt-8"
+                color="#2fc7f7"
+                @click="paynament()"
+                :disabled="disabled"
+              >
+                Пополнить баланс
+              </v-btn>
+            </div>
           </form>
         </v-card-text>
       </v-card>
@@ -43,9 +48,9 @@ export default {
   },
   methods: {
     paynament() {
-      this.$store.dispatch("PAYNAMENT", this.balance)
-    }
-  }
+      this.$store.dispatch("PAYNAMENT", this.balance);
+    },
+  },
 };
 </script>
 

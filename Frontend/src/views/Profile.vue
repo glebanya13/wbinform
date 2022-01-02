@@ -83,7 +83,7 @@
         <v-row class="mb-1 mt-1 ml-1">
           <v-card
             class="elevation-2 mt-4 mr-2"
-            width="300"
+            width="350"
             v-for="(item, i) in apiToken"
             :key="i"
             color="grey lighten-3"
@@ -94,9 +94,8 @@
                   <v-col cols="10">
                     <h2>{{ item.name }}</h2>
                     <h4 class="mt-1">
-                      {{ item.key.substr(0, 10) + "..." }}
+                      {{ item.key.substr(0, 20) + "..." }}
                     </h4>
-                    <h4 class="mt-4">Статус: {{ item.status }}</h4>
                   </v-col>
                   <v-col cols="2">
                     <v-menu offset-y>

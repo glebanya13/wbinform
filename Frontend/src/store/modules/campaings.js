@@ -23,11 +23,11 @@ export default {
                     name: payload.name,
                     balance: 0,
                     status: 'Идут показы',
-                    dateCreated: new Date(),
+                    dateCreated: new Date().toISOString().split('T')[0],
                     brands: payload.userBrands,
                     category: payload.userCategory,
                     subject: payload.userSubject,
-                    methods: payload.methods
+                    // methods: payload.methods
                 })
                     .then(() => {
                         dispatch("ADD_METHODS_DATA", payload.index)
@@ -45,7 +45,7 @@ export default {
             try {
                 firebase.database().ref('userData/' + getters.userId + '/campaings/' + payload).update({
                     status: 'Приостановлено',
-                    dateCompletion: new Date()
+                    dateCompletion: new Date().toISOString().split('T')[0]
                 })
             }
             catch (e) {
@@ -115,8 +115,8 @@ export default {
                         }
 
                         brands.push(brand)
-                       
-                        })
+
+                    })
                     commit('SET_BRANDS', brands)
                 })
                 .catch(error => {

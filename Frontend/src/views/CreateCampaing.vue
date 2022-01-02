@@ -44,7 +44,7 @@
 
               <v-divider></v-divider>
 
-              <v-stepper-step step="4" color="#3a0078" editable>
+              <v-stepper-step step="4" color="#3a0078">
                 Подтверждение
               </v-stepper-step>
             </v-stepper-header>
@@ -138,17 +138,21 @@
                         multiple
                         placeholder="Выберите из списка"
                       >
-                      <template v-slot:item="{ item }">
-                      <div class="combobox__row ng-star-inserted">
-                        <div class="combobox__row__item">
-                          <img :src="createUrlImage(item)" />
-                          <div class="combobox__row__item__body m-l-12">
-                          <div class="combobox__row__item__body__main"> {{userBrands}} / {{createName(item)}}</div>
+                        <template v-slot:item="{ item }">
+                          <div class="combobox__row ng-star-inserted">
+                            <div class="combobox__row__item">
+                              <img :src="createUrlImage(item)" />
+                              <div class="combobox__row__item__body m-l-12">
+                                <div class="combobox__row__item__body__main">
+                                  {{ userBrands }} / {{ createName(item) }}
+                                </div>
+                              </div>
+                              <div class="combobox__row__item__right m-l-12">
+                                {{ item }}
+                              </div>
+                            </div>
                           </div>
-                          <div class="combobox__row__item__right m-l-12">{{item}}</div>
-                          </div>
-                          </div>
-                      </template>
+                        </template>
                       </v-select>
                     </div>
                     <div class="flex m-t-48 m-b-6">
@@ -173,7 +177,7 @@
                         <div class="cell timeline">
                           <span class="circle first"></span>
                           <h2>{{ method.name }}</h2>
-                          <v-btn-toggle
+                          <!-- <v-btn-toggle
                             v-model="method.methods"
                             multiple
                             @change="changeMethodsDefault(method, i)"
@@ -198,7 +202,7 @@
                                 >WhatsUp</v-btn
                               >
                             </p>
-                          </v-btn-toggle>
+                          </v-btn-toggle> -->
                           <v-dialog width="50%">
                             <template v-slot:activator="{ on, attrs }">
                               <div class="trigger" v-bind="attrs" v-on="on">
@@ -355,7 +359,7 @@
                 </div>
                 <div class="m-t-56 m-b-24 wrap-hide ng-star-inserted">
                   <h3>
-                    Предметы, которые вы будете рекламировать<span
+                    Предметы, которые выбраны в Вашей кампании<span
                       class="
                         text--color-gray-dark text--regular
                         m-l-8
@@ -364,13 +368,21 @@
                     ></span>
                   </h3>
                 </div>
-                <ul>
-                  <li>
-                    <div class="m-t-24 m-b-24 ng-star-inserted">
-                      {{ userSubject.toString() }}
+                    <div class="m-t-24 m-b-24 ng-star-inserted" v-for="s in userSubject" :key="s">
+                      <div class="combobox__row ng-star-inserted">
+                            <div class="combobox__row__item">
+                              <img :src="createUrlImage(s)" />
+                              <div class="combobox__row__item__body m-l-12">
+                                <div class="combobox__row__item__body__main">
+                                  {{ userBrands }} / {{ createName(s) }}
+                                </div>
+                                <div class="combobox__row__item__body__sub">
+                                {{ s }}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                     </div>
-                  </li>
-                </ul>
                 <div class="flex m-t-48 m-b-6">
                   <button
                     class="btn btn--primary m-r-24"
@@ -400,7 +412,6 @@
 <script>
 import { mapGetters } from "vuex";
 import firebase from "firebase";
-import axios from 'axios'
 
 export default {
   data() {
@@ -416,6 +427,7 @@ export default {
       category: [],
       brand: [],
       subject: [],
+      arr: []
     };
   },
   computed: {
@@ -426,11 +438,12 @@ export default {
   },
   methods: {
     createUrlImage(y) {
-      return  y ? `https://images.wbstatic.net/big/new/${y.substr(0, 4)}0000/${y}-1.jpg` : 0;
+      return y
+        ? `https://images.wbstatic.net/big/new/${y.substr(0, 4)}0000/${y}-1.jpg`
+        : 0;
     },
-    async createName(y) {
-      const res = await axios.get(`https://wbxcatalog-ru.wildberries.ru/nm-2-card/catalog?spp=10&pricemarginCoeff=1.0&reg=1&appType=1&offlineBonus=0&onlineBonus=0&emp=0&locale=ru&lang=ru&curr=rub&couponsGeo=2,12,6,7,3,18,21&nm=${y}`)
-      return res.data.data.products.map((p) => p.name).toString()
+    createName(y) {
+      return this.brands.filter(b => b.nmId == y).map((b) => b.name).toString()
     },
     zero() {
       this.category = [];
@@ -462,16 +475,17 @@ export default {
     getSubject() {
       let arr = [];
       this.userCategory.forEach((c) => {
-          let brands = this.brands
-          .filter((brand) => brand.brand == this.userBrands && brand.category == c)
+        let brands = this.brands
+          .filter(
+            (brand) => brand.brand == this.userBrands && brand.category == c
+          )
           .map((brand) => brand.nmId)
-          .filter((e, i, a) => a.indexOf(e) == i)
-      
-          brands
-            .forEach((e) => {
-              arr.push(e.toString());
-            });
-      })
+          .filter((e, i, a) => a.indexOf(e) == i);
+
+        brands.forEach((e) => {
+          arr.push(e.toString());
+        });
+      });
       this.subject = arr
         .filter((e, i, a) => a.indexOf(e) == i)
         .filter((s) => s != "");
@@ -510,7 +524,7 @@ export default {
           userBrands: this.userBrands,
           userCategory: this.userCategory,
           userSubject: this.userSubject,
-          methods: this.methods,
+          // methods: this.methods,
           index: 0,
         });
       } else {
@@ -519,11 +533,11 @@ export default {
           userBrands: this.userBrands,
           userCategory: this.userCategory,
           userSubject: this.userSubject,
-          methods: this.methods,
+          // methods: this.methods,
           index: this.$store.getters.campaings.length,
         });
       }
-      this.$router.push("/campaigns");
+      this.$router.push("/campaings");
     },
     smsParts: function (message) {
       if (message.length < 160) {
@@ -659,38 +673,38 @@ export default {
 
 <style scoped>
 .combobox__row__item__body {
-    -ms-flex: 2;
-    flex: 2;
-    overflow: hidden;
+  -ms-flex: 2;
+  flex: 2;
+  overflow: hidden;
 }
 .combobox__row__item__body__main {
-    text-overflow: ellipsis;
-    overflow: hidden;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 .combobox__row__item__body__sub {
-    color: #4e4e53;
-    font-size: 12px;
-    line-height: 16px;
+  color: #4e4e53;
+  font-size: 12px;
+  line-height: 16px;
 }
-.combobox__row__item__right{
-    text-align: right;
-    font-size: 14px;
-    color: #4e4e53;
+.combobox__row__item__right {
+  text-align: right;
+  font-size: 14px;
+  color: #4e4e53;
 }
 .m-l-12 {
-    margin-left: 12px !important;
+  margin-left: 12px !important;
 }
 .combobox__row__item {
-    padding: 6px 12px;
-    white-space: nowrap;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-align: center;
-    align-items: center;
+  padding: 6px 12px;
+  white-space: nowrap;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
 }
 img {
   width: 28px;
-  height: 38px
+  height: 38px;
 }
 
 .page-title {
@@ -703,7 +717,7 @@ img {
 .page-content {
   display: block;
   border-radius: 8px;
-  padding: 32px;
+  padding: 30px;
   background-color: #fff;
 }
 .content {

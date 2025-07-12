@@ -8,7 +8,7 @@
       </template>
       {{ error }}
     </v-snackbar>
-    <Navbar />
+    <NavigationBar />
     <v-main>
       <router-view />
     </v-main>
@@ -16,12 +16,12 @@
 </template>
 
 <script>
-import Navbar from "./components/Navbar.vue";
+import NavigationBar from "./components/NavigationBar.vue";
 
 export default {
   name: "App",
   components: {
-    Navbar,
+    NavigationBar,
   },
   data: () => ({
     snackbar: false,

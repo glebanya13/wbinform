@@ -3,7 +3,6 @@ import Vuex from 'vuex'
 import generalModule from './modules/general'
 import userModule from './modules/user'
 import userDataModule from './modules/userData'
-import paynamentModule from './modules/paynament'
 import campaingsModule from './modules/campaings'
 
 Vue.use(Vuex)
@@ -14,6 +13,5 @@ export default new Vuex.Store({
     userModule,
     userDataModule,
     campaingsModule,
-    paynamentModule,
   }
 })

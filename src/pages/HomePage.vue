@@ -6,7 +6,7 @@
 import MainScreen from "../components/MainScreen.vue";
 
 export default {
-  name: "Home",
+  name: "HomePage",
 
   components: {
     MainScreen,

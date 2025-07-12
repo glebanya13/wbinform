@@ -9,12 +9,7 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
     </v-app-bar>
 
-    <v-navigation-drawer
-      color="#3a0078"
-      v-model="drawer"
-      absolute
-      temporary
-    >
+    <v-navigation-drawer color="#3a0078" v-model="drawer" absolute temporary>
       <v-layout column align-center v-if="isUserAuthenticated">
         <v-flex class="mt-5">
           <div class="card">
@@ -46,7 +41,9 @@
             <v-icon class="white--text">mdi-wallet</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title class="white--text">Пополнение баланса</v-list-item-title>
+            <v-list-item-title class="white--text"
+              >Пополнение баланса</v-list-item-title
+            >
           </v-list-item-content>
         </v-list-item>
 
@@ -97,11 +94,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-navigation-drawer
-      app
-      color="#3a0078"
-      v-if="isUserAuthenticated"
-    >
+    <v-navigation-drawer app color="#3a0078" v-if="isUserAuthenticated">
       <v-layout column align-center v-if="isUserAuthenticated">
         <v-flex class="mt-5">
           <div class="card">
@@ -133,7 +126,9 @@
             <v-icon class="white--text">mdi-wallet</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title class="white--text">Пополнение баланса</v-list-item-title>
+            <v-list-item-title class="white--text"
+              >Пополнение баланса</v-list-item-title
+            >
           </v-list-item-content>
         </v-list-item>
 

@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     paynament() {
-      this.$store.dispatch("PAYNAMENT", this.balance);
+      // TODO: Implement payment integration
     },
   },
 };

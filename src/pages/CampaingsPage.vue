@@ -7,23 +7,20 @@
         sort-by="calories"
         item-key="name"
       >
-        <template v-slot:item.name="{ item }">
+        <!-- <template v-slot:item.name="{ item }">
           <router-link :to="`/campaings/${campaings.indexOf(item)}`">
             <a style="color: black">{{ item.name }}</a>
           </router-link>
-        </template>
+        </template> -->
 
-        <template
-          v-for="(col, i) in filters"
-          v-slot:[`header.${i}`]="{ header }"
-        >
+        <template v-for="(col, i) in filters" :slot="`header.${i}`" slot-scope="{ header }">
           <div
             style="display: inline-block; padding: 16px 0"
-            :key="col.created"
+            :key="`text-${i}`"
           >
             {{ header.text }}
           </div>
-          <div style="float: right; margin-top: 8px" :key="col.created">
+          <div style="float: right; margin-top: 8px" :key="`menu-${i}`">
             <v-menu
               :close-on-content-click="false"
               :nudge-width="200"
@@ -100,7 +97,7 @@
             </v-menu>
           </div>
         </template>
-        <template v-slot:top>
+        <template #top>
           <v-toolbar flat color="white">
             <v-toolbar-title>
               <h1 class="page-title">Кампании</h1>
@@ -108,7 +105,7 @@
             <v-divider class="mx-4" inset vertical></v-divider>
           </v-toolbar>
         </template>
-        <template v-slot:no-data>
+        <template #no-data>
           <v-btn color="primary" @click="initialize()">Обновить</v-btn>
         </template>
       </v-data-table>

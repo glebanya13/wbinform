@@ -1,57 +1,56 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-import Signup from '../views/Signup.vue'
+import HomePage from '../pages/HomePage.vue'
+import SignupPage from '../pages/SignupPage.vue'
 import Store from '../store'
-import Profile from '../views/Profile.vue'
-import Balance from '../views/Balance.vue'
-import CreateCampaing from '../views/CreateCampaing.vue'
-import Campaings from '../views/Campaings.vue'
-import Campaing from '../views/Campaing.vue'
+import ProfilePage from '../pages/ProfilePage.vue'
+import BalancePage from '../pages/BalancePage.vue'
+import CreateCampaingPage from '../pages/CreateCampaingPage.vue'
+import CampaingsPage from '../pages/CampaingsPage.vue'
+import CampaingPage from '../pages/CampaingPage.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home,
+    name: 'home-page',
+    component: HomePage,
     meta: { authRequired: true }
   },
   {
     path: '/signup',
-    name: 'Signup',
-    component: Signup
+    name: 'signup-page',
+    component: SignupPage
   },
   {
     path: '/profile',
-    name: 'Profile',
-    component: Profile,
+    name: 'profile-page',
+    component: ProfilePage,
     meta: { authRequired: true }
   },
   {
     path: '/balance',
-    name: 'Balance',
-    component: Balance,
+    name: 'balance-page',
+    component: BalancePage,
     meta: { authRequired: true }
   },
-  // Campaing
   {
     path: '/campaing/create',
-    name: 'create-campaign',
-    component: CreateCampaing,
+    name: 'create-campaign-page',
+    component: CreateCampaingPage,
     meta: { authRequired: true }
   },
   {
     path: '/campaings',
-    name: 'campaigns',
-    component: Campaings,
+    name: 'campaings',
+    component: CampaingsPage,
     meta: { authRequired: true }
   },
   {
     path: '/campaings/:id',
-    name: 'campaing:id',
-    component: Campaing,
+    name: 'campaing-page:id',
+    component: CampaingPage,
     props: true,
     meta: { authRequired: true }
   },

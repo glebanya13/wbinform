@@ -1,6 +1,0 @@
-{
-    "require": {
-        "monolog/monolog": "2.0.*",
-        "ktamas77/firebase-php": "^3.0"
-    }
-}

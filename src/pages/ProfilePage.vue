@@ -238,11 +238,11 @@ export default {
     ValidationObserver,
   },
   data: () => ({
-    addDialog: false, // add api data modal
-    editDialog: false, // edit api data modal
-    name: "", // api name
-    key: "", // api token
-    key_x64: "", // api key_x64
+    addDialog: false,
+    editDialog: false,
+    name: "",
+    key: "",
+    key_x64: "",
   }),
   methods: {
     submit(item, index) {

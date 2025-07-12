@@ -195,7 +195,6 @@ export default {
 </script>
 
 <style scoped>
-/* margin padding */
 .m-l-6 {
   margin-left: 6px !important;
 }
@@ -232,8 +231,6 @@ export default {
 .l-h-28 {
   line-height: 28px !important;
 }
-
-/* content */
 .content {
   border-radius: 8px;
   padding: 32px;
@@ -250,8 +247,6 @@ export default {
   padding: 32px;
   background-color: #fff;
 }
-
-/* text button styles */
 .breadcrumb {
   font-size: 14px;
   color: #410b7b;

@@ -195,7 +195,8 @@ export default {
       return b;
     },
     isUserAuthenticated() {
-      return this.$store.getters.isUserAuthenticated;
+      // return this.$store.getters.isUserAuthenticated;
+      return true
     },
   },
   methods: {

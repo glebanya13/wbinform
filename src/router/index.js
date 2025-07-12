@@ -1,78 +1,57 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import HomePage from '../pages/HomePage.vue'
-import SignupPage from '../pages/SignupPage.vue'
-import Store from '../store'
-import ProfilePage from '../pages/ProfilePage.vue'
-import BalancePage from '../pages/BalancePage.vue'
-import CreateCampaingPage from '../pages/CreateCampaingPage.vue'
-import CampaingsPage from '../pages/CampaingsPage.vue'
-import CampaingPage from '../pages/CampaingPage.vue'
+import Vue from "vue";
+import VueRouter from "vue-router";
+import HomePage from "../pages/HomePage.vue";
+import ProfilePage from "../pages/ProfilePage.vue";
+import BalancePage from "../pages/BalancePage.vue";
+import CreateCampaingPage from "../pages/CreateCampaingPage.vue";
+import CampaingsPage from "../pages/CampaingsPage.vue";
+import CampaingPage from "../pages/CampaingPage.vue";
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/',
-    name: 'home-page',
+    path: "/",
+    name: "home-page",
     component: HomePage,
-    meta: { authRequired: true }
+    meta: { authRequired: true },
   },
   {
-    path: '/signup',
-    name: 'signup-page',
-    component: SignupPage
-  },
-  {
-    path: '/profile',
-    name: 'profile-page',
+    path: "/profile",
+    name: "profile-page",
     component: ProfilePage,
-    meta: { authRequired: true }
+    meta: { authRequired: true },
   },
   {
-    path: '/balance',
-    name: 'balance-page',
+    path: "/balance",
+    name: "balance-page",
     component: BalancePage,
-    meta: { authRequired: true }
+    meta: { authRequired: true },
   },
   {
-    path: '/campaing/create',
-    name: 'create-campaign-page',
+    path: "/campaing/create",
+    name: "create-campaign-page",
     component: CreateCampaingPage,
-    meta: { authRequired: true }
+    meta: { authRequired: true },
   },
   {
-    path: '/campaings',
-    name: 'campaings',
+    path: "/campaings",
+    name: "campaings",
     component: CampaingsPage,
-    meta: { authRequired: true }
+    meta: { authRequired: true },
   },
   {
-    path: '/campaings/:id',
-    name: 'campaing-page:id',
+    path: "/campaings/:id",
+    name: "campaing-page:id",
     component: CampaingPage,
     props: true,
-    meta: { authRequired: true }
+    meta: { authRequired: true },
   },
-]
+];
 
 const router = new VueRouter({
   routes,
-  mode: 'history'
-})
+  mode: "history",
+});
 
-router.beforeEach((to, from, next) => {
-  Store.dispatch('INIT_AUTH')
-    .then(user => {
-      if (to.matched.some(route => route.meta.authRequired)) {
-        if (user)
-          next()
-        else
-          next('/signup')
-      } else {
-        next()
-      }
-    })
-})
-
-export default router
+export default router;

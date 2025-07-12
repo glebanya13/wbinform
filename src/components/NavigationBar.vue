@@ -201,11 +201,10 @@ export default {
   methods: {
     logout() {
       this.$confirm("Вы точно хотите выйти?").then((res) => {
-        if (res) this.$store.dispatch("SIGNOUT");
+        if (res) {
+          // TODO
+        }
       });
-    },
-    regform() {
-      this.$router.push("/signup");
     },
   },
 };

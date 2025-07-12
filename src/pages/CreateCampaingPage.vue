@@ -52,12 +52,7 @@
             <v-stepper-items>
               <v-stepper-content step="1">
                 <div
-                  class="
-                    flex
-                    carousel-container-name
-                    flex--content-between
-                    ng-star-inserted
-                  "
+                  class="flex carousel-container-name flex--content-between ng-star-inserted"
                 >
                   <div class="carousel-container-name__col">
                     <h3>Дайте название новой кампании</h3>
@@ -103,12 +98,7 @@
 
               <v-stepper-content step="2">
                 <div
-                  class="
-                    flex
-                    carousel-container-name
-                    flex--content-between
-                    ng-star-inserted
-                  "
+                  class="flex carousel-container-name flex--content-between ng-star-inserted"
                 >
                   <div class="carousel-container-name__col">
                     <h3>
@@ -137,6 +127,8 @@
                         outlined
                         multiple
                         placeholder="Выберите из списка"
+                        item-value="nmId"
+                        item-text="name"
                       >
                         <template v-slot:item="{ item }">
                           <div class="combobox__row ng-star-inserted">
@@ -177,7 +169,7 @@
                         <div class="cell timeline">
                           <span class="circle first"></span>
                           <h2>{{ method.name }}</h2>
-                          <!-- <v-btn-toggle
+                          <v-btn-toggle
                             v-model="method.methods"
                             multiple
                             @change="changeMethodsDefault(method, i)"
@@ -202,7 +194,7 @@
                                 >WhatsUp</v-btn
                               >
                             </p>
-                          </v-btn-toggle> -->
+                          </v-btn-toggle>
                           <v-dialog width="50%">
                             <template v-slot:activator="{ on, attrs }">
                               <div class="trigger" v-bind="attrs" v-on="on">
@@ -360,29 +352,29 @@
                 <div class="m-t-56 m-b-24 wrap-hide ng-star-inserted">
                   <h3>
                     Предметы, которые выбраны в Вашей кампании<span
-                      class="
-                        text--color-gray-dark text--regular
-                        m-l-8
-                        ng-star-inserted
-                      "
+                      class="text--color-gray-dark text--regular m-l-8 ng-star-inserted"
                     ></span>
                   </h3>
                 </div>
-                    <div class="m-t-24 m-b-24 ng-star-inserted" v-for="s in userSubject" :key="s">
-                      <div class="combobox__row ng-star-inserted">
-                            <div class="combobox__row__item">
-                              <img :src="createUrlImage(s)" />
-                              <div class="combobox__row__item__body m-l-12">
-                                <div class="combobox__row__item__body__main">
-                                  {{ userBrands }} / {{ createName(s) }}
-                                </div>
-                                <div class="combobox__row__item__body__sub">
-                                {{ s }}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
+                <div
+                  class="m-t-24 m-b-24 ng-star-inserted"
+                  v-for="s in userSubject"
+                  :key="s"
+                >
+                  <div class="combobox__row ng-star-inserted">
+                    <div class="combobox__row__item">
+                      <img :src="createUrlImage(s)" />
+                      <div class="combobox__row__item__body m-l-12">
+                        <div class="combobox__row__item__body__main">
+                          {{ userBrands }} / {{ createName(s) }}
+                        </div>
+                        <div class="combobox__row__item__body__sub">
+                          {{ s }}
+                        </div>
+                      </div>
                     </div>
+                  </div>
+                </div>
                 <div class="flex m-t-48 m-b-6">
                   <button
                     class="btn btn--primary m-r-24"
@@ -411,7 +403,6 @@
 
 <script>
 import { mapGetters } from "vuex";
-import firebase from "firebase";
 
 export default {
   data() {
@@ -427,68 +418,214 @@ export default {
       category: [],
       brand: [],
       subject: [],
-      arr: []
+      arr: [],
+      mockBrands: [
+        {
+          nmId: "12345",
+          brand: "Adidas",
+          name: "Adidas Sport",
+          category: ["Обувь", "Спорт"],
+        },
+        {
+          nmId: "12346",
+          brand: "Nike",
+          name: "Nike Running",
+          category: ["Обувь", "Одежда"],
+        },
+        {
+          nmId: "12347",
+          brand: "Zara",
+          name: "Zara Home",
+          category: ["Одежда", "Аксессуары"],
+        },
+        {
+          nmId: "12348",
+          brand: "Apple",
+          name: "Apple Tech",
+          category: ["Электроника"],
+        },
+        {
+          nmId: "12349",
+          brand: "Samsung",
+          name: "Samsung Mobile",
+          category: ["Смартфоны", "Телевизоры"],
+        },
+        {
+          nmId: "12350",
+          brand: "LG",
+          name: "LG Electronics",
+          category: ["Техника для дома"],
+        },
+        {
+          nmId: "12351",
+          brand: "Bosch",
+          name: "Bosch Tools",
+          category: ["Инструменты"],
+        },
+        {
+          nmId: "12352",
+          brand: "Levi's",
+          name: "Levi's Jeans",
+          category: ["Джинсы"],
+        },
+        {
+          nmId: "12353",
+          brand: "Puma",
+          name: "Puma Sport",
+          category: ["Обувь", "Спорт"],
+        },
+        {
+          nmId: "12354",
+          brand: "Reebok",
+          name: "Reebok Classic",
+          category: ["Обувь"],
+        },
+      ],
+      mockCategories: [
+        "Обувь",
+        "Одежда",
+        "Электроника",
+        "Спорт",
+        "Аксессуары",
+        "Смартфоны",
+        "Телевизоры",
+        "Техника для дома",
+        "Инструменты",
+        "Джинсы",
+      ],
+      mockSubjects: [
+        { nmId: "1001", name: "Кроссовки Adidas Ultraboost" },
+        { nmId: "1002", name: "Футболка Nike Dri-FIT" },
+        { nmId: "1003", name: "Платье Zara летнее" },
+        { nmId: "1004", name: "iPhone 13 Pro" },
+        { nmId: "1005", name: "Телевизор Samsung QLED" },
+        { nmId: "1006", name: "Холодильник LG Side-by-Side" },
+        { nmId: "1007", name: "Дрель Bosch Professional" },
+        { nmId: "1008", name: "Джинсы Levi's 501" },
+        { nmId: "1009", name: "Кроссовки Puma RS-X" },
+        { nmId: "1010", name: "Кроссовки Reebok Classic Leather" },
+      ],
+      methods: [
+        {
+          message:
+            "Добрый день, {ИМЯ}! Мы невероятно рады, что вы сделали заказ нашего товара {ССЫЛКА} бренда {БРЕНД}  артикул {АРТИКУЛ ТОВАРА} на сайте Wildberries, отличный выбор! От команды {БРЕНД} огромное спасибо 😊. Мы уже начали оперативно собирать ваш заказ.",
+          name: "Стартовое уведомление",
+          start: true,
+        },
+        {
+          message:
+            "Спасибо за ваш недавний заказ на Wildberries. Я надеюсь, что изделие понравилось!  Если да, то не могли бы вы опубликовать отзыв? Это поможет нам и далее предоставлять отличные продукты и содействовать потенциальным покупателям в принятии уверенных решений. ⭐️⭐️⭐️⭐️⭐️",
+          name: "Уведомление о получении товара клиентом с ПВЗ",
+          start: false,
+        },
+        {
+          message:
+            "Ваш заказ от Wildberries находится в пункте выдачи  по адресу {АДРЕС ПВЗ}, у вас есть 7 дней бесплатного хранения.",
+          name: "Напоминание при несвоевременном получении товара с ПВЗ",
+          start: false,
+        },
+        {
+          message:
+            "Здравствуйте! Это (название бренда). Нам жаль, что (ССЫЛКА) не подошел вам. Возможно, вас заинтересуют другие предложения (2-3 ссылки на товары бренда). Ждем вас!",
+          name: "Уведомление об отказе клиентом",
+          start: false,
+        },
+        {
+          message:
+            "Здравствуйте! Это (название бренда). Благодарим за покупку (название товара) на сайте Wildberries! 😊 Оставьте, пожалуйста, отзыв на странице товара. В благодарность мы вышлем вам (чек-лист, ТОП-5 и т.д.).",
+          name: "Уведомление c просьбой оставить отзыв",
+          status: true,
+        },
+        {
+          message:
+            "Успейте купить удобные, легкие женские шлепанцы MG! по выгодной цене! В наличии большой ассортимент моделей от популярных новинок до лидеров продаж.",
+          name: "Массовая рассылка",
+          start: false,
+        },
+      ],
     };
   },
   computed: {
     ...mapGetters(["brands"]),
-    methods() {
-      return this.$store.getters.methods; // sms data
+    brandsToUse() {
+      return this.brands && this.brands.length > 0
+        ? this.brands
+        : this.mockBrands;
     },
   },
   methods: {
     createUrlImage(y) {
-      return y
-        ? `https://images.wbstatic.net/big/new/${y.substr(0, 4)}0000/${y}-1.jpg`
-        : 0;
+      if (!y || typeof y !== "string") {
+        return "";
+      }
+
+      if (y.length >= 4) {
+        return `https://images.wbstatic.net/big/new/${y.substr(
+          0,
+          4
+        )}0000/${y}-1.jpg`;
+      } else {
+        return `https://images.wbstatic.net/big/new/0000/${y}-1.jpg`;
+      }
     },
     createName(y) {
-      return this.brands.filter(b => b.nmId == y).map((b) => b.name).toString()
+      return this.brands
+        .filter((b) => b.nmId == y)
+        .map((b) => b.name)
+        .toString();
     },
     zero() {
       this.category = [];
       this.subject = [];
     },
     getBrand() {
-      this.brand = this.brands.map((brand) => brand.brand);
+      this.brand = this.brandsToUse
+        .map((brand) => brand.brand)
+        .filter((value, index, self) => self.indexOf(value) === index);
     },
     getCategory() {
-      let arr = [];
-      let brands = this.brands
-        .filter((brand) => brand.brand == this.userBrands)
-        .map((brand) => brand.category)
-        .filter((e, i, a) => a.indexOf(e) == i);
+      if (!this.userBrands) return;
 
-      if (brands.length > 1) {
-        brands
-          .filter((b) => b.length > 1)
-          .forEach((e) => {
-            arr.push(e.toString());
-          });
-      } else {
-        arr.push(brands.filter((b) => b.length != 1).toString());
-      }
-      this.category = arr
-        .filter((e, i, a) => a.indexOf(e) == i)
-        .filter((s) => s != "");
+      let categories = this.brandsToUse
+        .filter((brand) => brand.brand === this.userBrands)
+        .flatMap((brand) => brand.category)
+        .filter((value, index, self) => self.indexOf(value) === index);
+
+      this.category = categories.filter((cat) => cat && cat.length > 0);
     },
     getSubject() {
-      let arr = [];
-      this.userCategory.forEach((c) => {
-        let brands = this.brands
-          .filter(
-            (brand) => brand.brand == this.userBrands && brand.category == c
-          )
-          .map((brand) => brand.nmId)
-          .filter((e, i, a) => a.indexOf(e) == i);
+      if (
+        !this.userBrands ||
+        !this.userCategory ||
+        !Array.isArray(this.userCategory)
+      ) {
+        this.subject = [];
+        return;
+      }
+      try {
+        let subjects = this.brandsToUse
+          .filter((brand) => {
+            return (
+              brand.brand === this.userBrands &&
+              this.userCategory.some(
+                (cat) =>
+                  Array.isArray(brand.category) && brand.category.includes(cat)
+              )
+            );
+          })
+          .map((brand) => ({
+            nmId: brand.nmId,
+            name: brand.name || `Товар ${brand.nmId}`,
+          }));
 
-        brands.forEach((e) => {
-          arr.push(e.toString());
-        });
-      });
-      this.subject = arr
-        .filter((e, i, a) => a.indexOf(e) == i)
-        .filter((s) => s != "");
+        this.subject = subjects.filter(
+          (subj, index, self) =>
+            self.findIndex((s) => s.nmId === subj.nmId) === index
+        );
+      } catch (error) {
+        this.subject = [];
+        throw error;
+      }
     },
     nextPanel(id) {
       if (id == 2) {
@@ -625,41 +762,14 @@ export default {
       }
       return res;
     },
-    changeStatusDefault(card, i) {
-      try {
-        firebase
-          .database()
-          .ref("userData/" + this.$store.getters.userId + "/methods/" + i)
-          .update({
-            start: card.start,
-          });
-      } catch (e) {
-        console.log(e);
-      }
+    changeStatusDefault() {
+      // TODO
     },
-    changeMethodsDefault(card, i) {
-      try {
-        firebase
-          .database()
-          .ref("userData/" + this.$store.getters.userId + "/methods/" + i)
-          .update({
-            methods: card.methods,
-          });
-      } catch (e) {
-        console.log(e);
-      }
+    changeMethodsDefault() {
+      // TODO
     },
-    changeTextDefault(message, i) {
-      try {
-        firebase
-          .database()
-          .ref("userData/" + this.$store.getters.userId + "/methods/" + i)
-          .update({
-            message: message,
-          });
-      } catch (e) {
-        console.log(e);
-      }
+    changeTextDefault() {
+      // TODO
     },
     showModal(id) {
       this.selectedId = id;
@@ -830,21 +940,16 @@ h3 {
   color: #6c11c9;
   margin-bottom: 24px;
 }
-
-/* Setings */
-
 .settings-content {
   display: block;
   border-radius: 8px;
   padding: 10px;
   background-color: #fff;
 }
-
 .setting-content {
   flex: 1;
   background-color: #f2f2f2;
 }
-
 h2 {
   display: block;
   font-size: 1.5em;

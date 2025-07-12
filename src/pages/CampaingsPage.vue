@@ -13,7 +13,11 @@
           </router-link>
         </template> -->
 
-        <template v-for="(col, i) in filters" :slot="`header.${i}`" slot-scope="{ header }">
+        <template
+          v-for="(col, i) in filters"
+          :slot="`header.${i}`"
+          slot-scope="{ header }"
+        >
           <div
             style="display: inline-block; padding: 16px 0"
             :key="`text-${i}`"
@@ -127,9 +131,59 @@ export default {
     return {
       filters: { status: [] },
       activeFilters: {},
-      campaings: [],
       snackbar: false,
       snackbarText: "",
+      campaings: [
+        {
+          name: "Летняя распродажа",
+          dateCreated: "2024-06-15",
+          status: "Активна",
+          dateCompletion: "-",
+          archive: "Нет",
+        },
+        {
+          name: "Новогодняя акция",
+          dateCreated: "2023-12-01",
+          status: "Завершена",
+          dateCompletion: "2024-01-15",
+          archive: "Да",
+        },
+        {
+          name: "Черная пятница",
+          dateCreated: "2023-11-20",
+          status: "Завершена",
+          dateCompletion: "2023-11-30",
+          archive: "Да",
+        },
+        {
+          name: "Весенний флеш-сейл",
+          dateCreated: "2024-03-10",
+          status: "Приостановлена",
+          dateCompletion: "2024-04-01",
+          archive: "Нет",
+        },
+        {
+          name: "Скидки на электронику",
+          dateCreated: "2024-05-05",
+          status: "Активна",
+          dateCompletion: "-",
+          archive: "Нет",
+        },
+        {
+          name: "День рождения магазина",
+          dateCreated: "2024-02-15",
+          status: "Завершена",
+          dateCompletion: "2024-02-25",
+          archive: "Да",
+        },
+        {
+          name: "Осенняя коллекция",
+          dateCreated: "2023-09-01",
+          status: "Завершена",
+          dateCompletion: "2023-10-15",
+          archive: "Да",
+        },
+      ],
     };
   },
   computed: {
@@ -158,14 +212,14 @@ export default {
       ];
     },
     campaingsFromDB() {
-      return this.$store.getters.campaings;
+      return this.$store.getters.campaings || null;
     },
   },
   methods: {
     initialize() {
-      if (this.campaingsFromDB) {
-        this.campaings = this.campaingsFromDB;
-      } else {
+      this.campaings = this.campaingsFromDB || this.campaings;
+      this.initFilters();
+      if (!this.campaings.length) {
         this.snackbar = true;
         this.snackbarText = "У Вас нет кампаний";
       }

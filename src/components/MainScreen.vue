@@ -117,7 +117,50 @@ export default {
   data: () => ({
     filters: { orderId: [], fio: [], tableStatus: [] },
     activeFilters: {},
-    orders: [],
+    orders: [
+      {
+        orderId: "ORD-1001",
+        fio: "Иванов Иван Иванович",
+        tableStatus: "Выполнен",
+        sms_price: "1,250 ₽",
+      },
+      {
+        orderId: "ORD-1002",
+        fio: "Петрова Анна Сергеевна",
+        tableStatus: "В обработке",
+        sms_price: "890 ₽",
+      },
+      {
+        orderId: "ORD-1003",
+        fio: "Сидоров Алексей Владимирович",
+        tableStatus: "Отменен",
+        sms_price: "2,150 ₽",
+      },
+      {
+        orderId: "ORD-1004",
+        fio: "Кузнецова Елена Дмитриевна",
+        tableStatus: "Выполнен",
+        sms_price: "1,750 ₽",
+      },
+      {
+        orderId: "ORD-1005",
+        fio: "Васильев Денис Петрович",
+        tableStatus: "Новый",
+        sms_price: "3,200 ₽",
+      },
+      {
+        orderId: "ORD-1006",
+        fio: "Иванова Ольга Викторовна",
+        tableStatus: "В обработке",
+        sms_price: "1,100 ₽",
+      },
+      {
+        orderId: "ORD-1007",
+        fio: "Смирнов Артем Игоревич",
+        tableStatus: "Выполнен",
+        sms_price: "2,500 ₽",
+      },
+    ],
   }),
   methods: {
     initFilters() {
@@ -133,7 +176,6 @@ export default {
       }
       this.activeFilters = Object.assign({}, this.filters);
     },
-
     toggleAll(col) {
       this.activeFilters[col] = this.orders
         .map((d) => {
@@ -143,13 +185,11 @@ export default {
           return self.indexOf(value) === index;
         });
     },
-
     clearAll(col) {
       this.activeFilters[col] = [];
     },
-
     initialize() {
-      this.orders = this.ordersFromDB;
+      this.orders = [...this.orders];
     },
   },
   computed: {
@@ -197,7 +237,7 @@ export default {
     },
   },
   created() {
-    this.orders = this.ordersFromDB;
+    this.initFilters();
   },
 };
 </script>

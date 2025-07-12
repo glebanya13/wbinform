@@ -106,7 +106,6 @@
 </template>
 
 <script>
-import firebase from "firebase";
 import { required } from "vee-validate/dist/rules";
 import {
   extend,
@@ -162,22 +161,8 @@ export default {
       this.editDialog = false;
       this.editDialog1 = false;
     },
-    changeBudget(check) {
-      try {
-        firebase
-          .database()
-          .ref(
-            "userData/" +
-              this.$store.getters.userId +
-              "/campaings/" +
-              this.$route.params.id
-          )
-          .update({
-            budget: !check,
-          });
-      } catch (e) {
-        console.log(e);
-      }
+    changeBudget() {
+      // TODO
     },
     closeEditDialog() {
       this.editDialog = false;
@@ -307,7 +292,7 @@ h3 .icon {
   cursor: pointer;
 }
 .icon__pencil-create {
-  background-image: url(../assets/img/pencil-create.svg);
+  background-image: url(../assets/pencil-create.svg);
   width: 18px;
   height: 18px;
 }

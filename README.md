@@ -1,76 +1,67 @@
-# WBInform
+# 🛍 WBInform
+This project is a comprehensive Vue.js application that utilizes various technologies to provide a robust and scalable solution. The application is built using Vue.js as the frontend framework, with Vue Router for client-side routing and Vuex for state management. The project also incorporates Vuetify for styling and layout, and Firebase for authentication and data storage. The application features a navigation bar, snackbar for error messages, and a centralized state management system.
 
-**WBInform** is a marketing platform for automating communication with customers of an online store (integration with Wildberries).  
-The system allows you to create and manage email/SMS mailings at different stages of the order lifecycle.
+## 🚀 Features
+* **Navigation Bar**: A responsive navigation bar with routing functionality
+* **Snackbar**: A snackbar component for displaying error messages
+* **Centralized State Management**: A Vuex store for managing application state
+* **Authentication**: Firebase authentication for user management
+* **Data Storage**: Firebase database for storing and retrieving data
+* **Routing**: Vue Router for client-side routing
+* **Styling**: Vuetify for styling and layout
 
-## Key Features
+## 🛠️ Tech Stack
+* **Frontend Framework**: Vue.js
+* **Routing**: Vue Router
+* **State Management**: Vuex
+* **Styling**: Vuetify
+* **Authentication**: Firebase
+* **Data Storage**: Firebase Database
+* **Build Tool**: Vue CLI
+* **Transpiler**: Babel
+* **Linting**: ESLint
 
-### 1. Automated notification system
+## 📦 Installation
+To install the project, follow these steps:
+1. Clone the repository using `git clone`
+2. Install dependencies using `npm install` or `yarn install`
+3. Set up Firebase authentication and database
+4. Configure environment variables
 
-**Description:** Automatically sends messages to customers based on order statuses.  
-The system controls duplication to avoid duplicate sends and not to overburden customers.
+## 💻 Usage
+To run the application, use the following commands:
+* `npm run serve` or `yarn serve` to start the development server
+* `npm run build` or `yarn build` to build the application for production
 
-### 2. Message Builder
-
-**Description:** Convenient visual interface for creating messages with support for multichannel sending:  
-**SMS / WhatsApp / Telegram**.  
-You can use templates with dynamic variables: `{NAME}`, `{ ORDER NUMBER}`, `{Link}`, `{BRAND}`, `{ARTICLE}`, etc.  
-Automatic calculation of SMS length and cost is also available.
-
-### 3. API Key Manager
-
-**Description:** Visual interface for managing API keys:
-
-- Centralized and secure storage
-- Quick access and control
-- Work with multiple keys at the same time
-
-### 4. Campaign Management
-
-**Description:**
-Mass Mailing Control Panel:
-
-- View all active and completed campaigns
-- Filtering by status (active / completed / suspended)
-- Control launch and completion dates
-- Quickly edit and stop mailings
-
-## Technical Features
-
-- Frontend: Vue.js + Vuetify
-- State: Vuex
-- Flexible data filtering system
-- Support for dynamic variable substitution in message templates
-
-## Target audience
-
-- Online store marketers
-- Wildberries business owners
-- SMM specialists and agencies
-
-## Benefits
-
-- Automate routine notifications
-- Personalized communication
-- Increase customer loyalty
-- Increase feedback
-- Save team time
-
-## Needs to be finalized
-
-- Integration with Wildberries API (in full)
-- SMS gateway connection setup
-- Campaign performance analytics system
-- A/B-testing of message templates
-
-## Project installation
-
-```bash
-npm install
+## 📂 Project Structure
+```markdown
+.
+├── public
+├── src
+│   ├── main.js
+│   ├── App.vue
+│   ├── router
+│   │   ├── index.js
+│   ├── store
+│   │   ├── index.js
+│   │   ├── modules
+│   │   │   ├── user.js
+│   │   │   ├── general.js
+│   │   │   ├── userData.js
+│   │   │   ├── campaings.js
+│   ├── components
+│   │   ├── NavigationBar.vue
+│   │   ├── Snackbar.vue
+├── vue.config.js
+├── package.json
+├── babel.config.js
 ```
 
-## Start the project
+## 🤝 Contributing
+To contribute to the project, please submit a pull request with a detailed description of the changes.
 
-```bash
-npm run serve
-```
+## 📝 License
+This project is licensed under the MIT License.
+
+## 📬 Contact
+For any questions or concerns, please contact us at [glebanya.com@gmail.com](mailto:glebanya.com@gmail.com).
